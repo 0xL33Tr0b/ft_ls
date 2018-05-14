@@ -6,7 +6,7 @@
 /*   By: rdurst <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/14 16:31:22 by rdurst            #+#    #+#             */
-/*   Updated: 2018/05/14 18:46:12 by rdurst           ###   ########.fr       */
+/*   Updated: 2018/05/14 19:46:46 by rdurst           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@
 
 char	*find_filetype(struct stat *file);
 char	*find_modes(struct stat *file);
-void	print_file_info(char *filename);
+int		print_file_info(char *filename, char *path);
+char	*valid_path(char *path);
 
 #endif

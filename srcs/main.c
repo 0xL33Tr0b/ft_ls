@@ -31,7 +31,21 @@ char 	*find_modes(struct stat *file)
 	ret[9] = (file->st_mode & S_IXOTH ? 'x' : '-');
 	return (ret);
 }
-void	print_file_info(char *filename)
+
+char	*valid_path(char *path)
+{
+	int i;
+	
+	i = 0;
+	while (path[i])
+		i++;
+	if (i == 0 || path[i] == '/')
+		return (path);
+	else
+		return (ft_strjoin(path, "/"));
+}
+
+int		print_file_info(char *filename, char *path)
 {
 	struct group	*grp;
 	struct passwd	*usr;
@@ -42,8 +56,12 @@ void	print_file_info(char *filename)
 
 	buf = malloc(sizeof(struct stat));
 	ret = 0;
-	if ((ret = stat(filename, buf)) == -1)
-		return ;
+	
+	if ((ret = stat(ft_strjoin(valid_path(path), filename), buf)) == -1)
+	{
+		printf("ft_ls: %s%s", filename, ": No such file or directory\n");
+		return (1);
+	}
 	perms = find_modes(buf);
 	usr = getpwuid(buf->st_uid);
 	grp = getgrgid(buf->st_gid);
@@ -57,7 +75,8 @@ void	print_file_info(char *filename)
 	printf("%s ", timestamp);
 	printf("%s\n", filename);
 	ft_strdel(&perms);
-
+	free(buf);
+	return (0);
 }
 
 int	main(int ac, char **av)
@@ -70,7 +89,7 @@ int	main(int ac, char **av)
 		if ((current = opendir(".")) == NULL)
 			return (1);
 		while ((file = readdir(current)) != NULL)
-			print_file_info(file->d_name);
+			print_file_info(file->d_name, "");
 		(void)closedir(current);
 		return (0);
 	}
@@ -78,11 +97,11 @@ int	main(int ac, char **av)
 	{
 		if ((current = opendir(av[1])) == NULL)
 		{
-			printf("ft_ls: %s%s", av[1], ": No such file or directory\n");
+			print_file_info(av[1], "");
 			return (1);
 		}
 		while ((file = readdir(current)) != NULL)
-			print_file_info(file->d_name);
+			print_file_info(file->d_name, av[1]);
 		(void)closedir(current);
 		return (0);
 	}
