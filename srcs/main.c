@@ -35,7 +35,7 @@ char 	*find_modes(struct stat *file)
 char	*valid_path(char *path)
 {
 	int i;
-	
+
 	i = 0;
 	while (path[i])
 		i++;
@@ -56,7 +56,7 @@ int		print_file_info(char *filename, char *path)
 
 	buf = malloc(sizeof(struct stat));
 	ret = 0;
-	
+
 	if ((ret = stat(ft_strjoin(valid_path(path), filename), buf)) == -1)
 	{
 		printf("ft_ls: %s%s", filename, ": No such file or directory\n");
@@ -79,31 +79,41 @@ int		print_file_info(char *filename, char *path)
 	return (0);
 }
 
-int	main(int ac, char **av)
+int		neutral_ls(char *name)
 {
 	DIR *current;
 	struct dirent *file;
 
-	if (ac == 1)
+	if ((current = opendir(name)) == NULL)
 	{
-		if ((current = opendir(".")) == NULL)
-			return (1);
-		while ((file = readdir(current)) != NULL)
-			print_file_info(file->d_name, "");
-		(void)closedir(current);
-		return (0);
+		print_file_info(name, "");
+		return (1);
 	}
-	else if (ac == 2)
+	while ((file = readdir(current)) != NULL)
+		print_file_info(file->d_name, name);
+	(void)closedir(current);
+	return (0);
+}
+
+int	main(int ac, char **av)
+{
+	int counter;
+
+	counter = 1;
+	if (ac == 1)
+		return (neutral_ls("."));
+	else if (ac > 1)
 	{
-		if ((current = opendir(av[1])) == NULL)
+		while (av[counter])
 		{
-			print_file_info(av[1], "");
-			return (1);
+			ft_putstr(av[counter]);
+			ft_putendl(":");
+			neutral_ls(av[counter++]);
+			if (av[counter])
+				ft_putchar('\n');
+			else
+				break ;
 		}
-		while ((file = readdir(current)) != NULL)
-			print_file_info(file->d_name, av[1]);
-		(void)closedir(current);
-		return (0);
 	}
 	else
 		ft_putendl("Usage: ./ft_ls <directory>");
