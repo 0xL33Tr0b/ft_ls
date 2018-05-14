@@ -6,15 +6,17 @@
 #    By: rdurst <marvin@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/05/14 16:16:42 by rdurst            #+#    #+#              #
-#    Updated: 2018/05/14 17:01:10 by rdurst           ###   ########.fr        #
+#    Updated: 2018/05/14 18:45:53 by rdurst           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME=ft_ls
 CC=gcc
-INCLUDES= -I ./includes -I ./libft
+INCLUDES= -I ./includes
+LIBFT= libft/libft.a
 SRCS= ./srcs/main.c\
 
+OPTIONS= -Wall -Wextra -Werror
 RM= rm -rf
 
 RED = \033[1;31m
@@ -24,7 +26,7 @@ RESET = \033[0m
 
 name:
 	@make -C libft
-	@$(CC) $(SRCS) $(INCLUDES) -o $(NAME)
+	@$(CC) $(SRCS) $(INCLUDES) $(LIBFT) -o $(NAME) $(OPTIONS)
 	@echo "$(BLUE)\t\t\t\tft_ls has been built.$(RESET)"
 
 clean:
