@@ -97,12 +97,16 @@ int		neutral_ls(char *name)
 
 int	main(int ac, char **av)
 {
-	int counter;
+	int		counter;
+	t_options	*options;
 
 	counter = 1;
-	if (ac == 1)
+	options = init_options(ac, av);
+	while (av[counter] && av[counter][0] == '-')
+		counter++;
+	if ((ac - counter) == 0)
 		return (neutral_ls("."));
-	else if (ac > 1)
+	if ((ac - counter) > 0)
 	{
 		while (av[counter])
 		{

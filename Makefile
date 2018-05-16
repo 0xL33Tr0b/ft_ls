@@ -15,6 +15,7 @@ CC=gcc
 INCLUDES= -I ./includes
 LIBFT= libft/libft.a
 SRCS= ./srcs/main.c\
+	./srcs/options.c\
 
 OPTIONS= -Wall -Wextra -Werror
 RM= rm -rf

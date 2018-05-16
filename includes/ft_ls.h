@@ -26,10 +26,21 @@
 # include <dirent.h>
 # include "../libft/libft.h"
 
-char	*find_filetype(struct stat *file);
-char	*find_modes(struct stat *file);
-int		print_file_info(char *filename, char *path);
-char	*valid_path(char *path);
-int		neutral_ls(char *name);
+typedef struct		s_options
+{
+	int		l;
+	int		R;
+	int		a;
+	int		r;
+	int		t;
+}			t_options;
+
+char			*find_filetype(struct stat *file);
+char			*find_modes(struct stat *file);
+int			print_file_info(char *filename, char *path);
+char			*valid_path(char *path);
+int			neutral_ls(char *name);
+t_options		*init_options(int ac, char **av);
+void			fill_options(t_options *options, char *arg);
 
 #endif
