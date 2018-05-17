@@ -59,3 +59,12 @@ t_padding		*fill_padding(t_padding *padding, char *filename, char *path)
 		padding->size = size;
 	return (padding);
 }
+
+void			print_spaces(int nb)
+{
+	int i;
+
+	i = -1;
+	while (++i <= nb)
+		ft_putchar(' ');
+}

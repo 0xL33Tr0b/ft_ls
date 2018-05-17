@@ -60,12 +60,15 @@ typedef struct		s_file
 
 char				*find_filetype(struct stat *file);
 char				*find_modes(struct stat *file);
-int					print_file_info(char *filename, char *path);
+int					option_l(char *filename, char *path, t_padding *pad);
+int					no_options(char *filename, char *path);
+void					handle_options(char *name, char *path, t_options *options,  t_padding *pad);
 char				*valid_path(char *path);
 int					neutral_ls(char *name, t_options *options);
 t_options			*init_options(int ac, char **av);
 void				fill_options(t_options *options, char *arg);
 t_padding			*init_padding(void);
 t_padding			*fill_padding(t_padding *padding, char *filename, char *path);
+void				print_spaces(int nb);
 
 #endif

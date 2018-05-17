@@ -57,40 +57,6 @@ char	*valid_path(char *path)
 		return (ft_strjoin(path, "/"));
 }
 
-int		print_file_info(char *filename, char *path)
-{
-	struct group	*grp;
-	struct passwd	*usr;
-	char			*perms;
-	char			*timestamp;
-	struct stat		*buf;
-	int				ret;
-
-	buf = malloc(sizeof(struct stat));
-	ret = 0;
-
-	if ((ret = stat(ft_strjoin(valid_path(path), filename), buf)) == -1)
-	{
-		printf("ft_ls: %s%s", filename, ": No such file or directory\n");
-		return (1);
-	}
-	perms = find_modes(buf);
-	usr = getpwuid(buf->st_uid);
-	grp = getgrgid(buf->st_gid);
-	timestamp = ctime(&buf->st_mtime);
-	timestamp[24] = '\0';
-	printf("%s ", perms);
-	printf("%d\t", buf->st_nlink);
-	printf("%s ", usr->pw_name);
-	printf("%s ", grp->gr_name);
-	printf("%lld\t", buf->st_size);
-	printf("%s ", timestamp);
-	printf("%s\n", filename);
-	ft_strdel(&perms);
-	free(buf);
-	return (0);
-}
-
 int		neutral_ls(char *name, t_options *options)
 {
 	DIR 			*current;
@@ -100,7 +66,8 @@ int		neutral_ls(char *name, t_options *options)
 	padding = init_padding();
 	if ((current = opendir(name)) == NULL)
 	{
-		print_file_info(name, "");
+		fill_padding(padding, name, "");
+		handle_options(name, "", options, padding);
 		return (1);
 	}
 	while ((file = readdir(current)) != NULL)
@@ -109,7 +76,7 @@ int		neutral_ls(char *name, t_options *options)
 	current = opendir(name);
 	while ((file = readdir(current)) != NULL)
 		if (!(file->d_name[0] == '.' && options->a == 0))
-			print_file_info(file->d_name, name);
+			handle_options(file->d_name, name, options, padding);
 	(void)closedir(current);
 	return (0);
 }
@@ -118,6 +85,7 @@ int	main(int ac, char **av)
 {
 	int		counter;
 	t_options	*options;
+	DIR		*tmp;
 
 	counter = 1;
 	options = init_options(ac, av);
@@ -129,16 +97,16 @@ int	main(int ac, char **av)
 	{
 		while (av[counter])
 		{
-			ft_putstr(av[counter]);
-			ft_putendl(":");
+			if ((tmp = opendir(av[counter])) != NULL)
+			{
+				ft_putstr(av[counter]);
+				ft_putendl(":");
+				(void)closedir(tmp);
+			}
 			neutral_ls(av[counter++], options);
 			if (av[counter])
 				ft_putchar('\n');
-			else
-				break ;
 		}
 	}
-	else
-		ft_putendl("Usage: ./ft_ls <directory>");
 	return (0);
 }

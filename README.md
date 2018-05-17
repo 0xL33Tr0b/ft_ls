@@ -6,7 +6,8 @@ ft_ls project @ 42 school
 - [x] ls implementation with one argument and no options (being aware of -R imperatives)
 - [x] added option handling structure and option parsing
 - [x] implement -a
-- [ ] -l's padding
-- [ ] implement -l, -r and -t
+- [x] implement -l (with right padding)
+- [ ] recode everything more efficiently (code structure...)
+- [ ] implement -r and -t
 - [ ] implement -R
 - [ ] final checks (check norm, files, segfaults, sigaborts, error handling, speed etc...)
