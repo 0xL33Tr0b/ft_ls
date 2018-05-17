@@ -6,7 +6,7 @@
 /*   By: rdurst <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/14 16:31:22 by rdurst            #+#    #+#             */
-/*   Updated: 2018/05/17 17:10:13 by rdurst           ###   ########.fr       */
+/*   Updated: 2018/05/17 17:45:00 by rdurst           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,5 +65,7 @@ char				*valid_path(char *path);
 int					neutral_ls(char *name, t_options *options);
 t_options			*init_options(int ac, char **av);
 void				fill_options(t_options *options, char *arg);
+t_padding			*init_padding(void);
+t_padding			*fill_padding(t_padding *padding, char *filename, char *path);
 
 #endif

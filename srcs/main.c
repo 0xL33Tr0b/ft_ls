@@ -6,7 +6,7 @@
 /*   By: rdurst <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/17 16:13:57 by rdurst            #+#    #+#             */
-/*   Updated: 2018/05/17 17:14:26 by rdurst           ###   ########.fr       */
+/*   Updated: 2018/05/17 17:54:14 by rdurst           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,6 +103,10 @@ int		neutral_ls(char *name, t_options *options)
 		print_file_info(name, "");
 		return (1);
 	}
+	while ((file = readdir(current)) != NULL)
+		fill_padding(padding, file->d_name, name);
+	(void)closedir(current);
+	current = opendir(name);
 	while ((file = readdir(current)) != NULL)
 		if (!(file->d_name[0] == '.' && options->a == 0))
 			print_file_info(file->d_name, name);

@@ -6,7 +6,7 @@
 #    By: rdurst <marvin@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/05/14 16:16:42 by rdurst            #+#    #+#              #
-#    Updated: 2018/05/14 19:06:09 by rdurst           ###   ########.fr        #
+#    Updated: 2018/05/17 17:51:29 by rdurst           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,6 +16,7 @@ INCLUDES= -I ./includes
 LIBFT= libft/libft.a
 SRCS= ./srcs/main.c\
 	./srcs/options.c\
+	./srcs/padding.c\
 
 OPTIONS= -Wall -Wextra -Werror
 RM= rm -rf

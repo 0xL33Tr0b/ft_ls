@@ -6,7 +6,7 @@
 #    By: rdurst <marvin@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/11/09 12:23:27 by rdurst            #+#    #+#              #
-#    Updated: 2018/05/14 17:19:07 by rdurst           ###   ########.fr        #
+#    Updated: 2018/05/17 17:35:32 by rdurst           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -82,7 +82,8 @@ SRCS =\
 	ft_trimsize\
 	ft_intsize\
 	ft_isblanked\
-	ft_putcolor
+	ft_putcolor\
+	ft_nbrlen
 
 RED = \033[1;31m
 GREEN = \033[1;32m

@@ -6,7 +6,7 @@
 /*   By: rdurst <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/09 12:31:11 by rdurst            #+#    #+#             */
-/*   Updated: 2018/03/13 14:03:56 by rdurst           ###   ########.fr       */
+/*   Updated: 2018/05/17 17:47:02 by rdurst           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,5 +104,6 @@ char			**ft_strsplit(char const *s, char c);
 void			ft_lstiter(t_list *lst, void (*f)(t_list *elem));
 t_list			*ft_lstmap(t_list *lst, t_list *(*f)(t_list *elem));
 void			ft_intendl(int n);
+int				ft_nbrlen(int nb);
 
 #endif
