@@ -6,7 +6,7 @@
 /*   By: rdurst <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/14 16:31:22 by rdurst            #+#    #+#             */
-/*   Updated: 2018/05/14 20:01:21 by rdurst           ###   ########.fr       */
+/*   Updated: 2018/05/17 17:10:13 by rdurst           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,19 +28,42 @@
 
 typedef struct		s_options
 {
-	int		l;
-	int		R;
-	int		a;
-	int		r;
-	int		t;
-}			t_options;
+	int				l;
+	int				R;
+	int				a;
+	int				r;
+	int				t;
+}					t_options;
 
-char			*find_filetype(struct stat *file);
-char			*find_modes(struct stat *file);
-int			print_file_info(char *filename, char *path);
-char			*valid_path(char *path);
-int			neutral_ls(char *name);
-t_options		*init_options(int ac, char **av);
-void			fill_options(t_options *options, char *arg);
+typedef struct		s_padding
+{
+	int				directory_number;
+	int				perms;
+	int				links;
+	int				user;
+	int				group;
+	int				size;
+	int				timestamp;
+	int				name;
+}					t_padding;
+
+typedef struct		s_file
+{
+	char			*name;
+	char			*perms;
+	int				links;
+	char			*user;
+	char			*group;
+	int				size;
+	char			*timestamp;
+}					t_file;
+
+char				*find_filetype(struct stat *file);
+char				*find_modes(struct stat *file);
+int					print_file_info(char *filename, char *path);
+char				*valid_path(char *path);
+int					neutral_ls(char *name, t_options *options);
+t_options			*init_options(int ac, char **av);
+void				fill_options(t_options *options, char *arg);
 
 #endif

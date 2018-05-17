@@ -5,6 +5,8 @@ ft_ls project @ 42 school
 - [x] Makefile and git setup
 - [x] ls implementation with one argument and no options (being aware of -R imperatives)
 - [x] added option handling structure and option parsing
-- [ ] implement -l, -a, -r and -t (pay attention to padding)
+- [x] implement -a
+- [ ] -l's padding
+- [ ] implement -l, -r and -t
 - [ ] implement -R
 - [ ] final checks (check norm, files, segfaults, sigaborts, error handling, speed etc...)

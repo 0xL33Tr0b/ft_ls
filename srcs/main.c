@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: rdurst <marvin@42.fr>                      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2018/05/17 16:13:57 by rdurst            #+#    #+#             */
+/*   Updated: 2018/05/17 17:14:26 by rdurst           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "ft_ls.h"
 
 char	*find_filetype(struct stat *file)
@@ -79,18 +91,21 @@ int		print_file_info(char *filename, char *path)
 	return (0);
 }
 
-int		neutral_ls(char *name)
+int		neutral_ls(char *name, t_options *options)
 {
-	DIR *current;
-	struct dirent *file;
+	DIR 			*current;
+	struct dirent	*file;
+	t_padding		*padding;
 
+	padding = init_padding();
 	if ((current = opendir(name)) == NULL)
 	{
 		print_file_info(name, "");
 		return (1);
 	}
 	while ((file = readdir(current)) != NULL)
-		print_file_info(file->d_name, name);
+		if (!(file->d_name[0] == '.' && options->a == 0))
+			print_file_info(file->d_name, name);
 	(void)closedir(current);
 	return (0);
 }
@@ -105,14 +120,14 @@ int	main(int ac, char **av)
 	while (av[counter] && av[counter][0] == '-')
 		counter++;
 	if ((ac - counter) == 0)
-		return (neutral_ls("."));
+		return (neutral_ls(".", options));
 	if ((ac - counter) > 0)
 	{
 		while (av[counter])
 		{
 			ft_putstr(av[counter]);
 			ft_putendl(":");
-			neutral_ls(av[counter++]);
+			neutral_ls(av[counter++], options);
 			if (av[counter])
 				ft_putchar('\n');
 			else
