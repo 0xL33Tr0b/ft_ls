@@ -59,25 +59,21 @@ char	*valid_path(char *path)
 
 int		neutral_ls(char *name, t_options *options)
 {
-	DIR 			*current;
-	struct dirent	*file;
 	t_padding		*padding;
+	int			size;
+	t_file			**dir = NULL;
 
-	padding = init_padding();
-	if ((current = opendir(name)) == NULL)
-	{
-		fill_padding(padding, name, "");
-		handle_options(name, "", options, padding);
+	if (valid_arg(name) == 0)
 		return (1);
-	}
-	while ((file = readdir(current)) != NULL)
-		fill_padding(padding, file->d_name, name);
-	(void)closedir(current);
-	current = opendir(name);
-	while ((file = readdir(current)) != NULL)
-		if (!(file->d_name[0] == '.' && options->a == 0))
-			handle_options(file->d_name, name, options, padding);
-	(void)closedir(current);
+	padding = init_padding();
+	size = ft_dirlen(name, "");
+	dir = init_dir(dir, size);
+	if (valid_arg(name) == 2)
+		dir = fill_dir(dir, size, name);
+	else
+		dir = fill_file(dir, name);
+	padding = fill_padding(padding, dir, size);
+	handle_options(dir, size, options, padding);
 	return (0);
 }
 
@@ -92,7 +88,7 @@ int	main(int ac, char **av)
 	while (av[counter] && av[counter][0] == '-')
 		counter++;
 	if ((ac - counter) == 0)
-		return (neutral_ls(".", options));
+		return (neutral_ls("./", options));
 	if ((ac - counter) > 0)
 	{
 		while (av[counter])
@@ -104,7 +100,7 @@ int	main(int ac, char **av)
 				(void)closedir(tmp);
 			}
 			neutral_ls(av[counter++], options);
-			if (av[counter])
+			if (av[counter] && valid_arg(av[counter]) != 0)
 				ft_putchar('\n');
 		}
 	}

@@ -56,19 +56,29 @@ typedef struct		s_file
 	char			*group;
 	int				size;
 	char			*timestamp;
+	int			blocks;
 }					t_file;
 
 char				*find_filetype(struct stat *file);
 char				*find_modes(struct stat *file);
-int					option_l(char *filename, char *path, t_padding *pad);
-int					no_options(char *filename, char *path);
-void					handle_options(char *name, char *path, t_options *options,  t_padding *pad);
+int					option_l(t_file **dir, int size, t_options *options, t_padding *pad);
+void				no_padding(t_file **dir, int size, t_options *options);
+void					handle_options(t_file **dir, int size, t_options *options,  t_padding *pad);
 char				*valid_path(char *path);
 int					neutral_ls(char *name, t_options *options);
 t_options			*init_options(int ac, char **av);
 void				fill_options(t_options *options, char *arg);
 t_padding			*init_padding(void);
-t_padding			*fill_padding(t_padding *padding, char *filename, char *path);
+t_padding			*fill_padding(t_padding *padding, t_file **dir, int size);
 void				print_spaces(int nb);
+int				ft_dirlen(char *name, char *path);
+t_file				**init_dir(t_file **dir, int size);
+char				*find_user(struct stat *stats);
+char				*find_group(struct stat *stats);
+char				*find_timestamp(struct stat *stats);
+t_file				**fill_dir(t_file **dir, int size, char *path);
+t_file				**fill_file(t_file **dir, char *name);
+int				valid_arg(char *arg);
+void				print_blocks(t_file **dir, int size);
 
 #endif

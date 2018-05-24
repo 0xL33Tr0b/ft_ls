@@ -17,6 +17,9 @@ LIBFT= libft/libft.a
 SRCS= ./srcs/main.c\
 	./srcs/options.c\
 	./srcs/padding.c\
+	./srcs/dir.c\
+	./srcs/error.c\
+	./srcs/utils.c\
 
 OPTIONS= -Wall -Wextra -Werror
 RM= rm -rf

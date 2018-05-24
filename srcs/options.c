@@ -45,72 +45,58 @@ t_options	*init_options(int ac, char **av)
 	options->t = 0;
 	while (i < ac && av[i][0] == '-')
 		fill_options(options, av[i++]);
+	while (i < ac)
+	{
+		if (valid_arg(av[i]) == 0)
+			printf("ft_ls: %s%s", av[i], ": No such file or directory\n");
+		i++;
+	}
 	return (options);
 }
 
-int		option_l(char *filename, char *path, t_padding *pad)
+int		option_l(t_file **dir, int filesize, t_options *options, t_padding *pad)
 {
-	struct group	*grp;
-	struct passwd	*usr;
-	char			*perms;
-	char			*timestamp;
-	struct stat		*buf;
-	int				ret;
+	int i;
 
-	buf = malloc(sizeof(struct stat));
-	ret = 0;
-
-	if ((ret = stat(ft_strjoin(valid_path(path), filename), buf)) == -1)
+	i = 0;
+	print_blocks(dir, filesize);
+	while (i < filesize)
 	{
-		printf("ft_ls: %s%s", filename, ": No such file or directory\n");
-		return (1);
+		if (!(options->a == 0 && dir[i]->name[0] == '.'))
+		{
+			ft_putstr(dir[i]->perms);
+			print_spaces(pad->links - ft_nbrlen(dir[i]->links) + 1);
+			ft_putnbr(dir[i]->links);
+			print_spaces(pad->user - ft_strlen(dir[i]->user));
+			ft_putstr(dir[i]->user);
+			print_spaces(pad->group - ft_strlen(dir[i]->group) + 1);
+			ft_putstr(dir[i]->group);
+			print_spaces(pad->size - ft_nbrlen(dir[i]->size) + 1);
+			ft_putnbr(dir[i]->size);
+			print_spaces(0);
+			ft_putstr(dir[i]->timestamp);
+			print_spaces(0);
+			ft_putendl(dir[i]->name);
+		}
+		i++;
 	}
-	perms = find_modes(buf);
-	usr = getpwuid(buf->st_uid);
-	grp = getgrgid(buf->st_gid);
-	timestamp = ctime(&buf->st_mtime);
-	timestamp[24] = '\0';
-	ft_putstr(perms);
-	print_spaces(pad->links - ft_nbrlen(buf->st_nlink) + 1);
-	ft_putnbr(buf->st_nlink);
-	print_spaces(pad->user - ft_strlen(usr->pw_name));
-	ft_putstr(usr->pw_name);
-	print_spaces(pad->group - ft_strlen(grp->gr_name) + 1);
-	ft_putstr(grp->gr_name);
-	print_spaces(pad->size - ft_nbrlen(buf->st_size) + 1);
-	ft_putnbr(buf->st_size);
-	print_spaces(0);
-	ft_putstr(timestamp);
-	print_spaces(0);
-	ft_putendl(filename);
-	ft_strdel(&perms);
-	free(buf);
 	return (0);
 }
 
-int		no_options(char *filename, char *path)
+void		no_padding(t_file **dir, int size, t_options *options)
 {
-	struct stat		*buf;
-	int				ret;
+	int i;
 
-	buf = malloc(sizeof(struct stat));
-	ret = 0;
-
-	if ((ret = stat(ft_strjoin(valid_path(path), filename), buf)) == -1)
-	{
-		printf("ft_ls: %s%s", filename, ": No such file or directory\n");
-		return (1);
-	}
-	ft_putstr(filename);
-	ft_putchar('\n');
-	free(buf);
-	return (0);
+	i = -1;
+	while (++i < size)
+		if (!(options->a == 0 && dir[i]->name[0] == '.'))
+			ft_putendl(dir[i]->name);
 }
 
-void		handle_options(char *name, char *path, t_options *options, t_padding *pad)
+void		handle_options(t_file **dir, int size, t_options *options, t_padding *pad)
 {
 	if (options->l == 1)
-		option_l(name, path, pad);
+		option_l(dir, size, options, pad);
 	else
-		no_options(name, path);
+		no_padding(dir, size, options);
 }
