@@ -72,16 +72,65 @@ int		neutral_ls(char *name, t_options *options)
 		dir = fill_dir(dir, size, name);
 	else
 		dir = fill_file(dir, name);
+	if (options->r)
+		reverse_dir(dir, size);
+	else
+		sort_dir(dir, size);
 	padding = fill_padding(padding, dir, size);
 	handle_options(dir, size, options, padding);
 	return (0);
+}
+
+void	treat_args(char **av, int begin, t_options *options)
+{
+	int i;
+	int files;
+
+	i = begin;
+	files = 0;
+	while(av[i])
+	{
+		if (valid_arg(av[i]) == 2)
+			files = 1;
+		if (valid_arg(av[i]) == 1)
+			neutral_ls(av[i], options);
+		i++;
+	}
+	if (files == 1)
+		ft_putchar('\n');
+	treat_dirs(av, begin, options);
+}
+
+void	treat_dirs(char **av, int begin, t_options *options)
+{
+	int i;
+	int dirs;
+
+	i = begin - 1;
+	dirs = 0;
+	while (av[++i])
+		if (valid_arg(av[i]) == 2)
+			dirs++;
+	i = begin;
+	while(av[i])
+	{
+		if (valid_arg(av[i]) == 2)
+		{
+			ft_putstr(av[i]);
+			ft_putendl(":");
+			neutral_ls(av[i], options);
+			dirs--;
+			if (dirs > 0)
+				ft_putchar('\n');
+		}
+		i++;
+	}
 }
 
 int	main(int ac, char **av)
 {
 	int		counter;
 	t_options	*options;
-	DIR		*tmp;
 
 	counter = 1;
 	options = init_options(ac, av);
@@ -90,19 +139,6 @@ int	main(int ac, char **av)
 	if ((ac - counter) == 0)
 		return (neutral_ls("./", options));
 	if ((ac - counter) > 0)
-	{
-		while (av[counter])
-		{
-			if ((tmp = opendir(av[counter])) != NULL)
-			{
-				ft_putstr(av[counter]);
-				ft_putendl(":");
-				(void)closedir(tmp);
-			}
-			neutral_ls(av[counter++], options);
-			if (av[counter] && valid_arg(av[counter]) != 0)
-				ft_putchar('\n');
-		}
-	}
+		treat_args(av, counter, options);
 	return (0);
 }

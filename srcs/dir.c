@@ -64,7 +64,7 @@ char	*find_timestamp(struct stat *stats)
 
 	if ((ret = ctime(&stats->st_mtime)) == NULL)
 		return (NULL);
-	ret[24] = '\0';
+	ret[16] = '\0';
 	return (ret);
 }
 
@@ -117,4 +117,42 @@ t_file	**fill_file(t_file **dir, char *name)
 	dir[0]->blocks = stats->st_blocks;
 	free(stats);
 	return (dir);
+}
+
+void	sort_dir(t_file **dir, int size)
+{
+	int	i;
+	t_file	*tmp;
+
+	i = 0;
+	while (i < size)
+	{
+		if (i < size - 1 && ft_strcmp(dir[i]->name, dir[i + 1]->name) > 0)
+		{
+			tmp = dir[i];
+			dir[i] = dir[i + 1];
+			dir[i + 1] = tmp;
+			i -= 2;
+		}
+		i++;
+	}
+}
+
+void	reverse_dir(t_file **dir, int size)
+{
+	int	i;
+	t_file	*tmp;
+
+	i = size;
+	while (i >= 0)
+	{
+		if ((i > 0 && i < size) && ft_strcmp(dir[i]->name, dir[i - 1]->name) > 0)
+		{
+			tmp = dir[i];
+			dir[i] = dir[i - 1];
+			dir[i - 1] = tmp;
+			i += 2;
+		}
+		i--;
+	}
 }

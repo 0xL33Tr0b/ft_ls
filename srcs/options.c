@@ -59,7 +59,8 @@ int		option_l(t_file **dir, int filesize, t_options *options, t_padding *pad)
 	int i;
 
 	i = 0;
-	print_blocks(dir, filesize);
+	if (filesize > 1)
+		print_blocks(dir, filesize);
 	while (i < filesize)
 	{
 		if (!(options->a == 0 && dir[i]->name[0] == '.'))

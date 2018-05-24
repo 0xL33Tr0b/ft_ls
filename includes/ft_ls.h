@@ -80,5 +80,9 @@ t_file				**fill_dir(t_file **dir, int size, char *path);
 t_file				**fill_file(t_file **dir, char *name);
 int				valid_arg(char *arg);
 void				print_blocks(t_file **dir, int size);
+void				sort_dir(t_file **dir, int size);
+void				reverse_dir(t_file **dir, int size);
+void				treat_args(char **av, int begin, t_options *options);
+void				treat_dirs(char **av, int begin, t_options *options);
 
 #endif

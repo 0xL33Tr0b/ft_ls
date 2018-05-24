@@ -8,6 +8,7 @@ ft_ls project @ 42 school
 - [x] implement -a
 - [x] implement -l (with right padding)
 - [x] recode everything more efficiently (code structure...)
-- [ ] implement -r and -t
+- [x] implement -r
+- [ ] implement -t
 - [ ] implement -R
 - [ ] final checks (check norm, files, segfaults, sigaborts, error handling, speed etc...)
