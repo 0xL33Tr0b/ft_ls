@@ -54,12 +54,12 @@ t_options	*init_options(int ac, char **av)
 	return (options);
 }
 
-int		option_l(t_file **dir, int filesize, t_options *options, t_padding *pad)
+int		option_l(t_file **dir, int filesize, t_options *options, t_padding *pad, int files)
 {
 	int i;
 
 	i = 0;
-	if (filesize > 1)
+	if (filesize > 1 && files == 0)
 		print_blocks(dir, filesize);
 	while (i < filesize)
 	{
@@ -94,10 +94,10 @@ void		no_padding(t_file **dir, int size, t_options *options)
 			ft_putendl(dir[i]->name);
 }
 
-void		handle_options(t_file **dir, int size, t_options *options, t_padding *pad)
+void		handle_options(t_file **dir, int size, t_options *options, t_padding *pad, int files)
 {
 	if (options->l == 1)
-		option_l(dir, size, options, pad);
+		option_l(dir, size, options, pad, files);
 	else
 		no_padding(dir, size, options);
 }

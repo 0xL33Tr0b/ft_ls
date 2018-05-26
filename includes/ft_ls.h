@@ -61,9 +61,9 @@ typedef struct		s_file
 
 char				*find_filetype(struct stat *file);
 char				*find_modes(struct stat *file);
-int					option_l(t_file **dir, int size, t_options *options, t_padding *pad);
+int					option_l(t_file **dir, int size, t_options *options, t_padding *pad, int files);
 void				no_padding(t_file **dir, int size, t_options *options);
-void					handle_options(t_file **dir, int size, t_options *options,  t_padding *pad);
+void					handle_options(t_file **dir, int size, t_options *options,  t_padding *pad, int files);
 char				*valid_path(char *path);
 int					neutral_ls(char *name, t_options *options);
 t_options			*init_options(int ac, char **av);
@@ -77,12 +77,15 @@ char				*find_user(struct stat *stats);
 char				*find_group(struct stat *stats);
 char				*find_timestamp(struct stat *stats);
 t_file				**fill_dir(t_file **dir, int size, char *path);
-t_file				**fill_file(t_file **dir, char *name);
+t_file				**fill_files(char **av, int begin, int size, t_file **dir);
 int				valid_arg(char *arg);
 void				print_blocks(t_file **dir, int size);
 void				sort_dir(t_file **dir, int size);
 void				reverse_dir(t_file **dir, int size);
 void				treat_args(char **av, int begin, t_options *options);
 void				treat_dirs(char **av, int begin, t_options *options);
+int				count_dirs(char **av, int begin);
+int				count_files(char **av, int begin);
+int				single_files_ls(char **av, int begin, t_options *options);
 
 #endif

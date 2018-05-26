@@ -63,64 +63,83 @@ int		neutral_ls(char *name, t_options *options)
 	int			size;
 	t_file			**dir = NULL;
 
-	if (valid_arg(name) == 0)
+	if (valid_arg(name) == 0 || valid_arg(name) == 1)
 		return (1);
 	padding = init_padding();
 	size = ft_dirlen(name, "");
 	dir = init_dir(dir, size);
 	if (valid_arg(name) == 2)
 		dir = fill_dir(dir, size, name);
-	else
-		dir = fill_file(dir, name);
 	if (options->r)
 		reverse_dir(dir, size);
 	else
 		sort_dir(dir, size);
 	padding = fill_padding(padding, dir, size);
-	handle_options(dir, size, options, padding);
+	handle_options(dir, size, options, padding, 0);
 	return (0);
 }
 
 void	treat_args(char **av, int begin, t_options *options)
 {
-	int i;
-	int files;
 
+	single_files_ls(av, begin, options);
+	treat_dirs(av, begin, options);
+}
+
+int	count_dirs(char **av, int begin)
+{
+	int dirs;
+	int i;
+
+	dirs = 0;
 	i = begin;
-	files = 0;
-	while(av[i])
+	while (av[i])
 	{
 		if (valid_arg(av[i]) == 2)
-			files = 1;
-		if (valid_arg(av[i]) == 1)
-			neutral_ls(av[i], options);
+			dirs++;
 		i++;
 	}
-	if (files == 1)
-		ft_putchar('\n');
-	treat_dirs(av, begin, options);
+	return (dirs);
+}
+
+int	count_files(char **av, int begin)
+{
+	int files;
+	int i;
+
+	files = 0;
+	i = begin;
+	while (av[i])
+	{
+		if (valid_arg(av[i]) == 1)
+			files++;
+		i++;
+	}
+	return (files);
 }
 
 void	treat_dirs(char **av, int begin, t_options *options)
 {
 	int i;
 	int dirs;
+	int files;
 
-	i = begin - 1;
-	dirs = 0;
-	while (av[++i])
-		if (valid_arg(av[i]) == 2)
-			dirs++;
 	i = begin;
+	files = count_files(av, begin);
+	dirs = count_dirs(av, begin);
+	if (files > 0 && dirs > 0)
+		ft_putchar('\n');
 	while(av[i])
 	{
 		if (valid_arg(av[i]) == 2)
 		{
-			ft_putstr(av[i]);
-			ft_putendl(":");
-			neutral_ls(av[i], options);
-			dirs--;
-			if (dirs > 0)
+			if (dirs > 1 || files > 0)
+			{
+				ft_putstr(av[i]);
+				ft_putendl(":");
+			}
+			neutral_ls(valid_path(av[i]), options);
+			if (valid_arg(av[i + 1]) == 2)
 				ft_putchar('\n');
 		}
 		i++;

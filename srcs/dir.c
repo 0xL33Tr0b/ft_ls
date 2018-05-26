@@ -61,8 +61,9 @@ char	*find_group(struct stat *stats)
 char	*find_timestamp(struct stat *stats)
 {
 	char *ret;
-
-	if ((ret = ctime(&stats->st_mtime)) == NULL)
+	if ((ret = (char *)malloc(sizeof(char) * 24)) == NULL)
+		return (NULL);
+	if ((ret = ctime_r(&stats->st_mtime, ret)) == NULL)
 		return (NULL);
 	ret[16] = '\0';
 	return (ret);
@@ -100,22 +101,34 @@ t_file	**fill_dir(t_file **dir, int size, char *path)
 	return (dir);
 }
 
-t_file	**fill_file(t_file **dir, char *name)
+t_file	**fill_files(char **av, int begin, int size, t_file **dir)
 {
+	int i;
+	int j;
 	struct stat *stats;
 
-	stats = (struct stat *)malloc(sizeof(struct stat));	
-	if ((stat(name, stats)) == -1)
-		return (NULL);
-	dir[0]->name = name;
-	dir[0]->perms = find_modes(stats);
-	dir[0]->links = stats->st_nlink;
-	dir[0]->user = find_user(stats);
-	dir[0]->group = find_group(stats);
-	dir[0]->size = stats->st_size;
-	dir[0]->timestamp = find_timestamp(stats);
-	dir[0]->blocks = stats->st_blocks;
-	free(stats);
+	i = begin;
+	j = 0;
+	while (j < size)
+	{
+		if (valid_arg(av[i]) == 1)
+		{
+			stats = (struct stat *)malloc(sizeof(struct stat));	
+			if ((stat(av[i], stats)) == -1)
+				return (NULL);
+			dir[j]->name = av[i];
+			dir[j]->perms = find_modes(stats);
+			dir[j]->links = stats->st_nlink;
+			dir[j]->user = find_user(stats);
+			dir[j]->group = find_group(stats);
+			dir[j]->size = stats->st_size;
+			dir[j]->timestamp = find_timestamp(stats);
+			dir[j]->blocks = stats->st_blocks;
+			free(stats);
+			j++;
+		}
+	i++;
+	}
 	return (dir);
 }
 
