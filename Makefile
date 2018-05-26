@@ -21,7 +21,7 @@ SRCS= ./srcs/main.c\
 	./srcs/error.c\
 	./srcs/utils.c\
 
-OPTIONS= -Wall -Wextra -Werror
+OPTIONS= -Wall -Wextra -Werror -g3
 RM= rm -rf
 
 RED = \033[1;31m

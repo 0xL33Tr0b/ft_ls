@@ -61,6 +61,7 @@ char	*find_group(struct stat *stats)
 char	*find_timestamp(struct stat *stats)
 {
 	char *ret;
+	
 	if ((ret = (char *)malloc(sizeof(char) * 24)) == NULL)
 		return (NULL);
 	if ((ret = ctime_r(&stats->st_mtime, ret)) == NULL)
@@ -140,7 +141,7 @@ void	sort_dir(t_file **dir, int size)
 	i = 0;
 	while (i < size)
 	{
-		if (i < size - 1 && ft_strcmp(dir[i]->name, dir[i + 1]->name) > 0)
+		if (i < size - 1 && ft_strcmp(dir[i]->name, dir[i + 1]->name) > 0 && i > 1)
 		{
 			tmp = dir[i];
 			dir[i] = dir[i + 1];
