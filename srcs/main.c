@@ -81,7 +81,6 @@ int		neutral_ls(char *name, t_options *options)
 
 void	treat_args(char **av, int begin, t_options *options)
 {
-
 	single_files_ls(av, begin, options);
 	treat_dirs(av, begin, options);
 }

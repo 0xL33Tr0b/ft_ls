@@ -87,5 +87,7 @@ void				treat_dirs(char **av, int begin, t_options *options);
 int				count_dirs(char **av, int begin);
 int				count_files(char **av, int begin);
 int				single_files_ls(char **av, int begin, t_options *options);
+void				sort_args(char **av, int begin);
+void				reverse_args(char **av, int begin);
 
 #endif

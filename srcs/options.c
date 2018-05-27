@@ -34,6 +34,7 @@ void		fill_options(t_options *options, char *arg)
 t_options	*init_options(int ac, char **av)
 {
 	int		i;
+	int		tmp;
 	t_options	*options;
 
 	i = 1;
@@ -45,12 +46,16 @@ t_options	*init_options(int ac, char **av)
 	options->t = 0;
 	while (i < ac && av[i][0] == '-')
 		fill_options(options, av[i++]);
+	sort_args(av, i);
+	tmp = i;
 	while (i < ac)
 	{
 		if (valid_arg(av[i]) == 0)
 			printf("ft_ls: %s%s", av[i], ": No such file or directory\n");
 		i++;
 	}
+	if (options->r)
+		reverse_args(av, tmp);
 	return (options);
 }
 
