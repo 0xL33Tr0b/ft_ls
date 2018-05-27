@@ -9,7 +9,7 @@ ft_ls project @ 42 school
 - [x] implement -l (with right padding)
 - [x] recode everything more efficiently (code structure...)
 - [x] implement -r
-- [ ] change the order of char **av to fit with original ls treating order
+- [x] change the order of char **av to fit with original ls treating order
 - [ ] implement -t
 - [ ] implement -R
 - [ ] final checks (check norm, files, segfaults, sigaborts, error handling, speed etc...)
