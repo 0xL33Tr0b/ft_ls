@@ -50,7 +50,7 @@ char	*valid_path(char *path)
 
 	i = 0;
 	while (path[i])
-		i++;
+i++;
 	if (i == 0 || path[i] == '/')
 		return (path);
 	else
@@ -70,10 +70,11 @@ int		neutral_ls(char *name, t_options *options)
 	dir = init_dir(dir, size);
 	if (valid_arg(name) == 2)
 		dir = fill_dir(dir, size, name);
+	sort_dir(dir, size);
+	if (options->t)
+		option_t(dir, size);
 	if (options->r)
 		reverse_dir(dir, size);
-	else
-		sort_dir(dir, size);
 	padding = fill_padding(padding, dir, size);
 	handle_options(dir, size, options, padding, 0);
 	return (0);
@@ -82,6 +83,10 @@ int		neutral_ls(char *name, t_options *options)
 void	treat_args(char **av, int begin, t_options *options)
 {
 	single_files_ls(av, begin, options);
+	if (options->t)
+		sort_by_time(av, begin);
+	if (options->r)
+		reverse_args(&av[begin]);
 	treat_dirs(av, begin, options);
 }
 

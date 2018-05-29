@@ -54,8 +54,6 @@ t_options	*init_options(int ac, char **av)
 			printf("ft_ls: %s%s", av[i], ": No such file or directory\n");
 		i++;
 	}
-	if (options->r)
-		reverse_args(av, tmp);
 	return (options);
 }
 
@@ -80,7 +78,7 @@ int		option_l(t_file **dir, int filesize, t_options *options, t_padding *pad, in
 			print_spaces(pad->size - ft_nbrlen(dir[i]->size) + 1);
 			ft_putnbr(dir[i]->size);
 			print_spaces(0);
-			ft_putstr(dir[i]->timestamp);
+			print_timestamp(dir[i]->timestamp);
 			print_spaces(0);
 			ft_putendl(dir[i]->name);
 		}

@@ -33,7 +33,7 @@ t_file	**init_dir(t_file **dir, int size)
 		dir[i]->user = NULL;
 		dir[i]->group = NULL;
 		dir[i]->size = 0;
-		dir[i]->timestamp = NULL;
+		dir[i]->timestamp = 0;
 		dir[i]->blocks = 0;
 		i++;
 	}
@@ -58,16 +58,17 @@ char	*find_group(struct stat *stats)
 	return (grp->gr_name);
 }
 
-char	*find_timestamp(struct stat *stats)
+void	print_timestamp(long timestamp)
 {
 	char *ret;
-	
+
 	if ((ret = (char *)malloc(sizeof(char) * 24)) == NULL)
-		return (NULL);
-	if ((ret = ctime_r(&stats->st_mtime, ret)) == NULL)
-		return (NULL);
+		return ;
+	if ((ret = ctime_r(&timestamp, ret)) == NULL)
+		return ;
 	ret[16] = '\0';
-	return (ret);
+	ft_putstr(ret);
+	free(ret);
 }
 
 t_file	**fill_dir(t_file **dir, int size, char *path)
@@ -87,13 +88,13 @@ t_file	**fill_dir(t_file **dir, int size, char *path)
 			return (NULL);
 		if ((stat(ft_strjoin(path, file->d_name), stats)) == -1)
 			return (NULL);
-		dir[i]->name = file->d_name;
+		dir[i]->name = ft_strdup(file->d_name);
 		dir[i]->perms = find_modes(stats);
 		dir[i]->links = stats->st_nlink;
 		dir[i]->user = find_user(stats);
 		dir[i]->group = find_group(stats);
 		dir[i]->size = stats->st_size;
-		dir[i]->timestamp = find_timestamp(stats);
+		dir[i]->timestamp = stats->st_mtime;
 		dir[i]->blocks = stats->st_blocks;
 		free(stats);
 		i++;
@@ -117,18 +118,18 @@ t_file	**fill_files(char **av, int begin, int size, t_file **dir)
 			stats = (struct stat *)malloc(sizeof(struct stat));	
 			if ((stat(av[i], stats)) == -1)
 				return (NULL);
-			dir[j]->name = av[i];
+			dir[j]->name = ft_strdup(av[i]);
 			dir[j]->perms = find_modes(stats);
 			dir[j]->links = stats->st_nlink;
 			dir[j]->user = find_user(stats);
 			dir[j]->group = find_group(stats);
 			dir[j]->size = stats->st_size;
-			dir[j]->timestamp = find_timestamp(stats);
+			dir[j]->timestamp = stats->st_mtime;
 			dir[j]->blocks = stats->st_blocks;
 			free(stats);
 			j++;
 		}
-	i++;
+		i++;
 	}
 	return (dir);
 }
@@ -139,9 +140,9 @@ void	sort_dir(t_file **dir, int size)
 	t_file	*tmp;
 
 	i = 0;
-	while (i < size)
+	while (i < size - 1)
 	{
-		if (i < size - 1 && ft_strcmp(dir[i]->name, dir[i + 1]->name) > 0 && i > 1)
+		if(ft_strcmp(dir[i]->name, dir[i + 1]->name) > 0 && i > 1)
 		{
 			tmp = dir[i];
 			dir[i] = dir[i + 1];
@@ -157,16 +158,49 @@ void	reverse_dir(t_file **dir, int size)
 	int	i;
 	t_file	*tmp;
 
-	i = size;
-	while (i >= 0)
+	i = 0;
+	size--;
+	while (i < size)
 	{
-		if ((i > 0 && i < size) && ft_strcmp(dir[i]->name, dir[i - 1]->name) > 0)
+		tmp = dir[i];
+		dir[i] = dir[size];
+		dir[size] = tmp;
+		i++;
+		size--;
+	}
+	return ;
+}
+
+void	lexical_order(t_file **dir)
+{
+	if (dir[0]->name[0] >= 'A')
+		reverse_dir(dir, 2);
+	else
+		sort_dir(dir, 2);
+}
+
+void	option_t(t_file **dir, int size)
+{
+	int	i;
+	t_file	*tmp;
+
+	i = 0;
+	if (size < 2)
+		return ;
+	while (i < size - 1)
+	{
+		if (dir[i]->timestamp <= dir[i + 1]->timestamp)
 		{
-			tmp = dir[i];
-			dir[i] = dir[i - 1];
-			dir[i - 1] = tmp;
-			i += 2;
+			if (dir[i]->timestamp == dir[i + 1]->timestamp)
+				lexical_order(&dir[i]);
+			else
+			{
+				tmp = dir[i];
+				dir[i] = dir[i + 1];
+				dir[i + 1] = tmp;
+				i = 0;
+			}
 		}
-		i--;
+		i++;
 	}
 }

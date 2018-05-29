@@ -55,13 +55,14 @@ typedef struct		s_file
 	char			*user;
 	char			*group;
 	int				size;
-	char			*timestamp;
+	long			timestamp;
 	int			blocks;
 }					t_file;
 
 char				*find_filetype(struct stat *file);
 char				*find_modes(struct stat *file);
 int					option_l(t_file **dir, int size, t_options *options, t_padding *pad, int files);
+void				option_t(t_file **dir, int size);
 void				no_padding(t_file **dir, int size, t_options *options);
 void					handle_options(t_file **dir, int size, t_options *options,  t_padding *pad, int files);
 char				*valid_path(char *path);
@@ -75,7 +76,7 @@ int				ft_dirlen(char *name, char *path);
 t_file				**init_dir(t_file **dir, int size);
 char				*find_user(struct stat *stats);
 char				*find_group(struct stat *stats);
-char				*find_timestamp(struct stat *stats);
+void				print_timestamp(long timestamp);
 t_file				**fill_dir(t_file **dir, int size, char *path);
 t_file				**fill_files(char **av, int begin, int size, t_file **dir);
 int				valid_arg(char *arg);
@@ -88,6 +89,8 @@ int				count_dirs(char **av, int begin);
 int				count_files(char **av, int begin);
 int				single_files_ls(char **av, int begin, t_options *options);
 void				sort_args(char **av, int begin);
-void				reverse_args(char **av, int begin);
+void				reverse_args(char **av);
+void				sort_by_time(char **av, int begin);
+void				lexical_order(t_file **dir);
 
 #endif
