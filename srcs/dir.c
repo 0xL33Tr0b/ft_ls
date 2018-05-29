@@ -171,12 +171,26 @@ void	reverse_dir(t_file **dir, int size)
 	return ;
 }
 
-void	lexical_order(t_file **dir)
+void	lexical_order(t_file **dir, int size)
 {
-	if (dir[0]->name[0] >= 'A')
-		reverse_dir(dir, 2);
-	else
-		sort_dir(dir, 2);
+	int i;
+	int j;
+	int k;
+
+	i = 0;
+	j = 0;
+	k = 0;
+	while (i < size - 1)
+	{	
+		k = i;
+		while ((i < size - 1) && dir[i]->timestamp == dir[i + 1]->timestamp)
+		{
+			i++;
+			j++;
+		}
+		sort_dir(&dir[k], j);
+		i++;
+	}
 }
 
 void	option_t(t_file **dir, int size)
@@ -189,18 +203,14 @@ void	option_t(t_file **dir, int size)
 		return ;
 	while (i < size - 1)
 	{
-		if (dir[i]->timestamp <= dir[i + 1]->timestamp)
+		if (dir[i]->timestamp < dir[i + 1]->timestamp)
 		{
-			if (dir[i]->timestamp == dir[i + 1]->timestamp)
-				lexical_order(&dir[i]);
-			else
-			{
 				tmp = dir[i];
 				dir[i] = dir[i + 1];
 				dir[i + 1] = tmp;
 				i = 0;
-			}
 		}
 		i++;
 	}
+	lexical_order(dir, size);
 }

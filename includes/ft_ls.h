@@ -91,6 +91,6 @@ int				single_files_ls(char **av, int begin, t_options *options);
 void				sort_args(char **av, int begin);
 void				reverse_args(char **av);
 void				sort_by_time(char **av, int begin);
-void				lexical_order(t_file **dir);
+void				lexical_order(t_file **dir, int size);
 
 #endif
