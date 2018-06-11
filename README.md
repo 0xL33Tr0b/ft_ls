@@ -11,5 +11,6 @@ ft_ls project @ 42 school
 - [x] implement -r
 - [x] change the order of char **av to fit with original ls treating order
 - [x] implement -t
-- [ ] implement -R
+- [x] implement -R
+- [ ] fix bugs
 - [ ] final checks (check norm, files, segfaults, sigaborts, error handling, speed etc...)
