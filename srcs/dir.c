@@ -22,7 +22,6 @@ int	ft_dirlen(char *name, char *path)
 
 void	free_file(t_file *dir)
 {
-	ft_strdel(&dir->path);
 	ft_strdel(&dir->name);
 	ft_strdel(&dir->perms);
 	ft_strdel(&dir->user);
@@ -36,6 +35,7 @@ void	free_dir(t_file **dir, int size)
 	int i;
 
 	i = 0;
+	ft_strdel(&dir[0]->path);
 	while (i < size)
 		free_file(dir[i++]);
 }
@@ -73,11 +73,12 @@ char	*find_user(struct stat *stats)
 	struct passwd	*usr;
 	char		*ret;
 
-	if ((usr = (struct passwd *)malloc(sizeof(struct passwd))) == NULL)
-		return (NULL);
 	if ((usr = getpwuid(stats->st_uid)) == NULL)
+		ret = ft_itoa(stats->st_uid);
+	else
+		ret = ft_strdup(usr->pw_name);
+	if (ret == NULL)
 		return (NULL);
-	ret = ft_strdup(usr->pw_name);
 	return (ret);
 }
 
@@ -86,11 +87,10 @@ char	*find_group(struct stat *stats)
 	struct group	*grp;
 	char		*ret;
 
-	if ((grp = (struct group *)malloc(sizeof(struct group))) == NULL)
-		return (NULL);
 	if ((grp = getgrgid(stats->st_gid)) == NULL) 
 		return (NULL);
-	ret = ft_strdup(grp->gr_name);
+	if ((ret = ft_strdup(grp->gr_name)) == NULL)
+		return (NULL);
 	return (ret);
 }
 
@@ -99,11 +99,11 @@ char	*find_link(char *path, char *file)
 	char *buf;
 	char *tmp;
 	
-	buf = (char *)malloc(sizeof(char) * 256);
-	buf[255] = '\0';
+	buf = (char *)malloc(sizeof(char) * 1024);
+	buf[1023] = '\0';
 	tmp = ft_strdup(path);
 	path = ft_strjoin(tmp, file);
-	if (readlink(path, buf, 256) == -1)
+	if (readlink(path, buf, 1024) == -1)
 		return (NULL);
 	return (buf);
 }
@@ -115,10 +115,13 @@ void	print_timestamp(long timestamp)
 	if ((ret = (char *)malloc(sizeof(char) * 24)) == NULL)
 		return ;
 	if ((ret = ctime_r(&timestamp, ret)) == NULL)
+	{
+		ft_strdel(&ret);
 		return ;
+	}
 	ret[16] = '\0';
 	ft_putstr(ret);
-	free(ret);
+	ft_strdel(&ret);
 }
 
 t_file	**fill_dir(t_file **dir, int size, char *path, t_options *options)
@@ -154,6 +157,7 @@ t_file	**fill_dir(t_file **dir, int size, char *path, t_options *options)
 		else
 		{
 			dir[i]->name = ft_strdup(file->d_name);
+			dir[i]->path = dir[0]->path;
 			dir[i]->perms = find_modes(stats);
 			dir[i]->links = stats->st_nlink;
 			dir[i]->linkpath = find_link(dir[0]->path, dir[i]->name);

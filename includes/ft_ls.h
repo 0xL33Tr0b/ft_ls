@@ -6,7 +6,7 @@
 /*   By: rdurst <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/14 16:31:22 by rdurst            #+#    #+#             */
-/*   Updated: 2018/05/17 17:45:00 by rdurst           ###   ########.fr       */
+/*   Updated: 2018/06/11 15:32:00 by rdurst           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ typedef struct		s_file
 	char			*group;
 	int				size;
 	long			timestamp;
-	int			blocks;
+	long			blocks;
 }					t_file;
 
 char				*find_filetype(struct stat *file);
