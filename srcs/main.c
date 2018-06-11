@@ -31,7 +31,7 @@ char 	*find_modes(struct stat *file)
 	char *ret;
 
 	ret = ft_strnew(10);
-	ret[0] = (S_ISDIR(file->st_mode) ? 'd' : '-');
+	ret[0] = (S_ISLNK(file->st_mode) ? 'l' : (S_ISDIR(file->st_mode) ? 'd' : '-'));
 	ret[1] = (file->st_mode & S_IRUSR ? 'r' : '-');
 	ret[2] = (file->st_mode & S_IWUSR ? 'w' : '-');
 	ret[3] = (file->st_mode & S_IXUSR ? 'x' : '-');
@@ -46,15 +46,23 @@ char 	*find_modes(struct stat *file)
 
 char	*valid_path(char *path)
 {
-	int i;
+	int 	i;
+	char	*tmp;
 
 	i = 0;
+	if (!path)
+		return (NULL);
 	while (path[i])
-i++;
-	if (i == 0 || path[i] == '/')
+		i++;
+	if (i == 1 || path[i] == '/')
 		return (path);
 	else
-		return (ft_strjoin(path, "/"));
+	{
+		tmp = ft_strdup(path);
+		path = ft_strjoin(tmp, "/");
+		ft_strdel(&tmp);
+		return (path);
+	}
 }
 
 int		neutral_ls(char *name, t_options *options)
@@ -69,7 +77,7 @@ int		neutral_ls(char *name, t_options *options)
 	size = ft_dirlen(name, "");
 	dir = init_dir(dir, size);
 	if (valid_arg(name) == 2)
-		dir = fill_dir(dir, size, name);
+		dir = fill_dir(dir, size, name, options);
 	sort_dir(dir, size);
 	if (options->t)
 		option_t(dir, size);
@@ -77,6 +85,7 @@ int		neutral_ls(char *name, t_options *options)
 		reverse_dir(dir, size);
 	padding = fill_padding(padding, dir, size);
 	handle_options(dir, size, options, padding, 0);
+	free_dir(dir, size);
 	return (0);
 }
 
@@ -146,7 +155,7 @@ void	treat_dirs(char **av, int begin, t_options *options)
 			if (valid_arg(av[i + 1]) == 2)
 				ft_putchar('\n');
 		}
-		i++;
+	i++;
 	}
 }
 

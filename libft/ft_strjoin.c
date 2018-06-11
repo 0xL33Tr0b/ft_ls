@@ -25,6 +25,7 @@ char	*ft_strjoin(char *s1, char *s2)
 	fresh = (char *)malloc(sizeof(char) * (ft_strlen(s1) + ft_strlen(s2) + 1));
 	if (fresh == NULL)
 		return (NULL);
+	
 	while (s1[i])
 	{
 		fresh[i] = s1[i];

@@ -12,7 +12,7 @@ int	valid_arg(char *arg)
 		return (2);
 	}
 	stats = malloc(sizeof(struct stat));
-	if (stat(arg, stats) == -1)
+	if (lstat(arg, stats) == -1)
 		return (0);
 	free(stats);
 	return (1);

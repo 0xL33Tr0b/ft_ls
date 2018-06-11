@@ -49,9 +49,11 @@ typedef struct		s_padding
 
 typedef struct		s_file
 {
+	char			*path;
 	char			*name;
 	char			*perms;
 	int				links;
+	char			*linkpath;
 	char			*user;
 	char			*group;
 	int				size;
@@ -76,8 +78,9 @@ int				ft_dirlen(char *name, char *path);
 t_file				**init_dir(t_file **dir, int size);
 char				*find_user(struct stat *stats);
 char				*find_group(struct stat *stats);
+char				*find_link(char *path, char *name);
 void				print_timestamp(long timestamp);
-t_file				**fill_dir(t_file **dir, int size, char *path);
+t_file				**fill_dir(t_file **dir, int size, char *path, t_options *options);
 t_file				**fill_files(char **av, int begin, int size, t_file **dir);
 int				valid_arg(char *arg);
 void				print_blocks(t_file **dir, int size);
@@ -92,5 +95,8 @@ void				sort_args(char **av, int begin);
 void				reverse_args(char **av);
 void				sort_by_time(char **av, int begin);
 void				lexical_order(t_file **dir, int size);
+void				option_R(t_file **dir, int size, t_options *options);
+void				free_file(t_file *dir);
+void				free_dir(t_file **dir, int size);
 
 #endif

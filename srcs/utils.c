@@ -93,7 +93,7 @@ long	get_timestamp(char *dir)
 	struct stat	*stats;
 
 	stats = malloc(sizeof(struct stat));
-	if (stat(dir, stats) == -1)
+	if (lstat(dir, stats) == -1)
 		return (0);
 	return (stats->st_mtime);
 }

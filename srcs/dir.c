@@ -5,15 +5,39 @@ int	ft_dirlen(char *name, char *path)
 	int		ret;
 	DIR		*dir;
 	struct dirent	*files;
+	char		*tmp;
 
-	ret = 0;	
-	if ((dir = opendir(ft_strjoin(path, name))) == NULL)
+	ret = 0;
+	tmp = ft_strdup(path);
+	path = ft_strjoin(tmp, name);
+	ft_strdel(&tmp);
+	if ((dir = opendir(path)) == NULL)
 		return (1);
 	else
 		while ((files = readdir(dir)) != NULL)
 			ret++;
 	(void)closedir(dir);
 	return (ret);
+}
+
+void	free_file(t_file *dir)
+{
+	ft_strdel(&dir->path);
+	ft_strdel(&dir->name);
+	ft_strdel(&dir->perms);
+	ft_strdel(&dir->user);
+	ft_strdel(&dir->group);
+	ft_strdel(&dir->linkpath);
+	free(dir);
+}
+
+void	free_dir(t_file **dir, int size)
+{
+	int i;
+
+	i = 0;
+	while (i < size)
+		free_file(dir[i++]);
 }
 
 t_file	**init_dir(t_file **dir, int size)
@@ -27,9 +51,11 @@ t_file	**init_dir(t_file **dir, int size)
 	{
 		if ((dir[i] = malloc(sizeof(t_file))) == NULL)
 			return (NULL);
+		dir[i]->path = NULL;
 		dir[i]->name = NULL;
 		dir[i]->perms = NULL;
 		dir[i]->links = 0;
+		dir[i]->linkpath = NULL;
 		dir[i]->user = NULL;
 		dir[i]->group = NULL;
 		dir[i]->size = 0;
@@ -37,25 +63,49 @@ t_file	**init_dir(t_file **dir, int size)
 		dir[i]->blocks = 0;
 		i++;
 	}
-	return (dir);
+	if (i == size)
+		return (dir);
+	return (NULL);
 }
 
 char	*find_user(struct stat *stats)
 {
 	struct passwd	*usr;
+	char		*ret;
 
+	if ((usr = (struct passwd *)malloc(sizeof(struct passwd))) == NULL)
+		return (NULL);
 	if ((usr = getpwuid(stats->st_uid)) == NULL)
 		return (NULL);
-	return (usr->pw_name);
+	ret = ft_strdup(usr->pw_name);
+	return (ret);
 }
 
 char	*find_group(struct stat *stats)
 {
 	struct group	*grp;
+	char		*ret;
 
+	if ((grp = (struct group *)malloc(sizeof(struct group))) == NULL)
+		return (NULL);
 	if ((grp = getgrgid(stats->st_gid)) == NULL) 
 		return (NULL);
-	return (grp->gr_name);
+	ret = ft_strdup(grp->gr_name);
+	return (ret);
+}
+
+char	*find_link(char *path, char *file)
+{
+	char *buf;
+	char *tmp;
+	
+	buf = (char *)malloc(sizeof(char) * 256);
+	buf[255] = '\0';
+	tmp = ft_strdup(path);
+	path = ft_strjoin(tmp, file);
+	if (readlink(path, buf, 256) == -1)
+		return (NULL);
+	return (buf);
 }
 
 void	print_timestamp(long timestamp)
@@ -71,32 +121,50 @@ void	print_timestamp(long timestamp)
 	free(ret);
 }
 
-t_file	**fill_dir(t_file **dir, int size, char *path)
+t_file	**fill_dir(t_file **dir, int size, char *path, t_options *options)
 {
 	int		i;
 	struct dirent	*file;
 	struct stat	*stats;
 	DIR		*dirpointer;
+	char		*tmp;
 
 	i = 0;
 	if ((dirpointer = opendir(path)) == NULL)
 		return (NULL);
+	dir[0]->path = ft_strdup(path);
 	while (i < size)
 	{
-		stats = (struct stat *)malloc(sizeof(struct stat));
+		if ((stats = (struct stat *)malloc(sizeof(struct stat))) == NULL)
+			return (NULL);
 		if ((file = readdir(dirpointer)) == NULL)
 			return (NULL);
-		if ((stat(ft_strjoin(path, file->d_name), stats)) == -1)
-			return (NULL);
-		dir[i]->name = ft_strdup(file->d_name);
-		dir[i]->perms = find_modes(stats);
-		dir[i]->links = stats->st_nlink;
-		dir[i]->user = find_user(stats);
-		dir[i]->group = find_group(stats);
-		dir[i]->size = stats->st_size;
-		dir[i]->timestamp = stats->st_mtime;
-		dir[i]->blocks = stats->st_blocks;
-		free(stats);
+		tmp = ft_strjoin(path, file->d_name);
+		if ((lstat(tmp, stats)) == -1)
+		{
+			dir[i]->name = ft_strdup(file->d_name);
+			dir[i]->perms = find_modes(stats);
+			if (options->l)
+			{
+				ft_putstr("ft_ls: ");
+				ft_putstr(dir[i]->name);
+				ft_putendl(": Operation not permitted");
+			}
+		}
+		else
+		{
+			dir[i]->name = ft_strdup(file->d_name);
+			dir[i]->perms = find_modes(stats);
+			dir[i]->links = stats->st_nlink;
+			dir[i]->linkpath = find_link(dir[0]->path, dir[i]->name);
+			dir[i]->user = find_user(stats);
+			dir[i]->group = find_group(stats);
+			dir[i]->size = stats->st_size;
+			dir[i]->timestamp = stats->st_mtime;
+			dir[i]->blocks = stats->st_blocks;
+			free(stats);
+			ft_strdel(&tmp);
+		}
 		i++;
 	}
 	(void)closedir(dirpointer);
@@ -116,7 +184,7 @@ t_file	**fill_files(char **av, int begin, int size, t_file **dir)
 		if (valid_arg(av[i]) == 1)
 		{
 			stats = (struct stat *)malloc(sizeof(struct stat));	
-			if ((stat(av[i], stats)) == -1)
+			if ((lstat(av[i], stats)) == -1)
 				return (NULL);
 			dir[j]->name = ft_strdup(av[i]);
 			dir[j]->perms = find_modes(stats);
@@ -140,9 +208,9 @@ void	sort_dir(t_file **dir, int size)
 	t_file	*tmp;
 
 	i = 0;
-	while (i < size - 1)
+	while (i < size - 1 && dir[i])
 	{
-		if(ft_strcmp(dir[i]->name, dir[i + 1]->name) > 0 && i > 1)
+		if(ft_strcmp(dir[i]->name, dir[i + 1]->name) > 0)
 		{
 			tmp = dir[i];
 			dir[i] = dir[i + 1];
@@ -160,7 +228,7 @@ void	reverse_dir(t_file **dir, int size)
 
 	i = 0;
 	size--;
-	while (i < size)
+	while (i < size / 2 && dir[i])
 	{
 		tmp = dir[i];
 		dir[i] = dir[size];
@@ -180,7 +248,7 @@ void	lexical_order(t_file **dir, int size)
 	i = 0;
 	j = 0;
 	k = 0;
-	while (i < size - 1)
+	while (i < size - 1 && dir[i])
 	{	
 		k = i;
 		while ((i < size - 1) && dir[i]->timestamp == dir[i + 1]->timestamp)
@@ -189,6 +257,7 @@ void	lexical_order(t_file **dir, int size)
 			j++;
 		}
 		sort_dir(&dir[k], j);
+		j = 0;
 		i++;
 	}
 }
@@ -201,14 +270,14 @@ void	option_t(t_file **dir, int size)
 	i = 0;
 	if (size < 2)
 		return ;
-	while (i < size - 1)
+	while (i < size - 1 && dir[i])
 	{
 		if (dir[i]->timestamp < dir[i + 1]->timestamp)
 		{
-				tmp = dir[i];
-				dir[i] = dir[i + 1];
-				dir[i + 1] = tmp;
-				i = 0;
+			tmp = dir[i];
+			dir[i] = dir[i + 1];
+			dir[i + 1] = tmp;
+			i = 0;
 		}
 		i++;
 	}
