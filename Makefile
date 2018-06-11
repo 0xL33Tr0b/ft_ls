@@ -6,7 +6,7 @@
 #    By: rdurst <marvin@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/05/14 16:16:42 by rdurst            #+#    #+#              #
-#    Updated: 2018/06/11 16:19:58 by rdurst           ###   ########.fr        #
+#    Updated: 2018/06/11 18:15:05 by rdurst           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,6 +22,7 @@ SRCS= ./srcs/main.c\
 	./srcs/utils.c\
 
 OPTIONS= -Wall -Wextra -Werror
+DEBUGFLAG= -g3
 RM= rm -rf
 
 RED = \033[1;31m
@@ -33,6 +34,11 @@ name:
 	@make -C libft
 	@$(CC) $(SRCS) $(INCLUDES) $(LIBFT) -o $(NAME) $(OPTIONS)
 	@echo "$(BLUE)\t\t\t\tft_ls has been built.$(RESET)"
+
+debug: fclean
+	@make -C libft
+	@$(CC) $(SRCS) $(INCLUDES) $(LIBFT) -o $(NAME) $(OPTIONS) $(DEBUGFLAG)
+	@echo "$(BLUE)\t\t\t\tft_ls has been built with $(GREEN)'-g3'$(BLUE) flag.$(RESET)"
 
 clean:
 	@make -C libft fclean

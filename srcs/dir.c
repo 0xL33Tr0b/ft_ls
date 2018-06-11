@@ -88,8 +88,10 @@ char	*find_group(struct stat *stats)
 	char		*ret;
 
 	if ((grp = getgrgid(stats->st_gid)) == NULL) 
-		return (NULL);
-	if ((ret = ft_strdup(grp->gr_name)) == NULL)
+		ret = ft_itoa(stats->st_gid);
+	else 
+		ret = ft_strdup(grp->gr_name);
+	if (ret == NULL)
 		return (NULL);
 	return (ret);
 }
@@ -138,11 +140,11 @@ t_file	**fill_dir(t_file **dir, int size, char *path, t_options *options)
 	dir[0]->path = ft_strdup(path);
 	while (i < size)
 	{
-		if ((stats = (struct stat *)malloc(sizeof(struct stat))) == NULL)
-			return (NULL);
 		if ((file = readdir(dirpointer)) == NULL)
 			return (NULL);
 		tmp = ft_strjoin(path, file->d_name);
+		if ((stats = (struct stat *)malloc(sizeof(struct stat))) == NULL)
+			return (NULL);
 		if ((lstat(tmp, stats)) == -1)
 		{
 			dir[i]->name = ft_strdup(file->d_name);
@@ -166,9 +168,9 @@ t_file	**fill_dir(t_file **dir, int size, char *path, t_options *options)
 			dir[i]->size = stats->st_size;
 			dir[i]->timestamp = stats->st_mtime;
 			dir[i]->blocks = stats->st_blocks;
-			free(stats);
 			ft_strdel(&tmp);
 		}
+		free(stats);
 		i++;
 	}
 	(void)closedir(dirpointer);
@@ -183,11 +185,13 @@ t_file	**fill_files(char **av, int begin, int size, t_file **dir)
 
 	i = begin;
 	j = 0;
+	stats = NULL;
 	while (j < size)
 	{
 		if (valid_arg(av[i]) == 1)
 		{
-			stats = (struct stat *)malloc(sizeof(struct stat));	
+			if ((stats = (struct stat *)malloc(sizeof(struct stat))) == NULL)
+				return (NULL);
 			if ((lstat(av[i], stats)) == -1)
 				return (NULL);
 			dir[j]->name = ft_strdup(av[i]);
@@ -198,8 +202,8 @@ t_file	**fill_files(char **av, int begin, int size, t_file **dir)
 			dir[j]->size = stats->st_size;
 			dir[j]->timestamp = stats->st_mtime;
 			dir[j]->blocks = stats->st_blocks;
-			free(stats);
 			j++;
+			free(stats);
 		}
 		i++;
 	}
@@ -212,16 +216,17 @@ void	sort_dir(t_file **dir, int size)
 	t_file	*tmp;
 
 	i = 0;
-	while (i < size - 1 && dir[i])
+	while (i < size - 1)
 	{
 		if(ft_strcmp(dir[i]->name, dir[i + 1]->name) > 0)
 		{
 			tmp = dir[i];
 			dir[i] = dir[i + 1];
 			dir[i + 1] = tmp;
-			i -= 2;
+			i -= 1;
 		}
-		i++;
+		else
+			i++;
 	}
 }
 
