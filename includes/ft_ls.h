@@ -58,6 +58,7 @@ typedef struct		s_file
 	char			*group;
 	int				size;
 	long			timestamp;
+	long			ntimestamp;
 	long			blocks;
 }					t_file;
 
@@ -86,6 +87,7 @@ int				valid_arg(char *arg);
 void				print_blocks(t_file **dir, int size);
 void				sort_dir(t_file **dir, int size);
 void				reverse_dir(t_file **dir, int size);
+void				option_t(t_file **dir, int size);
 void				treat_args(char **av, int begin, t_options *options);
 void				treat_dirs(char **av, int begin, t_options *options);
 int				count_dirs(char **av, int begin);
@@ -94,7 +96,6 @@ int				single_files_ls(char **av, int begin, t_options *options);
 void				sort_args(char **av, int begin);
 void				reverse_args(char **av);
 void				sort_by_time(char **av, int begin);
-void				lexical_order(t_file **dir, int size);
 void				option_R(t_file **dir, int size, t_options *options);
 void				free_file(t_file *dir);
 void				free_dir(t_file **dir, int size);

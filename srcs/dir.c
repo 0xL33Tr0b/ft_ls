@@ -60,6 +60,7 @@ t_file	**init_dir(t_file **dir, int size)
 		dir[i]->group = NULL;
 		dir[i]->size = 0;
 		dir[i]->timestamp = 0;
+		dir[i]->ntimestamp = 0;
 		dir[i]->blocks = 0;
 		i++;
 	}
@@ -167,6 +168,7 @@ t_file	**fill_dir(t_file **dir, int size, char *path, t_options *options)
 			dir[i]->group = find_group(stats);
 			dir[i]->size = stats->st_size;
 			dir[i]->timestamp = stats->st_mtime;
+			dir[i]->ntimestamp = stats->st_mtimespec.tv_nsec;
 			dir[i]->blocks = stats->st_blocks;
 			ft_strdel(&tmp);
 		}
@@ -201,6 +203,7 @@ t_file	**fill_files(char **av, int begin, int size, t_file **dir)
 			dir[j]->group = find_group(stats);
 			dir[j]->size = stats->st_size;
 			dir[j]->timestamp = stats->st_mtime;
+			dir[j]->ntimestamp = stats->st_mtimespec.tv_nsec;
 			dir[j]->blocks = stats->st_blocks;
 			j++;
 			free(stats);
@@ -223,7 +226,8 @@ void	sort_dir(t_file **dir, int size)
 			tmp = dir[i];
 			dir[i] = dir[i + 1];
 			dir[i + 1] = tmp;
-			i -= 1;
+			if (i > 0)
+				i -= 1;
 		}
 		else
 			i++;
@@ -237,7 +241,7 @@ void	reverse_dir(t_file **dir, int size)
 
 	i = 0;
 	size--;
-	while (i < size / 2 && dir[i])
+	while (i < size)
 	{
 		tmp = dir[i];
 		dir[i] = dir[size];
@@ -248,47 +252,24 @@ void	reverse_dir(t_file **dir, int size)
 	return ;
 }
 
-void	lexical_order(t_file **dir, int size)
-{
-	int i;
-	int j;
-	int k;
-
-	i = 0;
-	j = 0;
-	k = 0;
-	while (i < size - 1 && dir[i])
-	{	
-		k = i;
-		while ((i < size - 1) && dir[i]->timestamp == dir[i + 1]->timestamp)
-		{
-			i++;
-			j++;
-		}
-		sort_dir(&dir[k], j);
-		j = 0;
-		i++;
-	}
-}
-
 void	option_t(t_file **dir, int size)
 {
 	int	i;
 	t_file	*tmp;
 
 	i = 0;
-	if (size < 2)
-		return ;
-	while (i < size - 1 && dir[i])
+	while (i < size - 1)
 	{
-		if (dir[i]->timestamp < dir[i + 1]->timestamp)
+		if (dir[i]->timestamp < dir[i + 1]->timestamp 
+		|| (dir[i]->timestamp == dir[i + 1]->timestamp 
+		&& dir[i]->ntimestamp < dir[i + 1]->ntimestamp))
 		{
 			tmp = dir[i];
 			dir[i] = dir[i + 1];
 			dir[i + 1] = tmp;
 			i = 0;
 		}
-		i++;
+		else
+			i++;
 	}
-	lexical_order(dir, size);
 }
