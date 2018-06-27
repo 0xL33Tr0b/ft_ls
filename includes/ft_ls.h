@@ -56,7 +56,7 @@ typedef struct		s_file
 	char			*linkpath;
 	char			*user;
 	char			*group;
-	int				size;
+	long				size;
 	long			timestamp;
 	long			ntimestamp;
 	long			blocks;
@@ -84,7 +84,7 @@ void				print_timestamp(long timestamp);
 t_file				**fill_dir(t_file **dir, int size, char *path, t_options *options);
 t_file				**fill_files(char **av, int begin, int size, t_file **dir);
 int				valid_arg(char *arg);
-void				print_blocks(t_file **dir, int size);
+void				print_blocks(t_file **dir, int size, t_options *options);
 void				sort_dir(t_file **dir, int size);
 void				reverse_dir(t_file **dir, int size);
 void				option_t(t_file **dir, int size);
@@ -99,5 +99,8 @@ void				sort_by_time(char **av, int begin);
 void				option_R(t_file **dir, int size, t_options *options);
 void				free_file(t_file *dir);
 void				free_dir(t_file **dir, int size);
+void				perm_denied(char *file);
+int				next_dir_offset(char **av);
+long				get_timestamp(char *dir);
 
 #endif

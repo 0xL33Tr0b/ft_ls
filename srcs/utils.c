@@ -1,6 +1,26 @@
 #include "ft_ls.h"
 
-void	print_blocks(t_file **dir, int size)
+int	ft_dirlen(char *name, char *path)
+{
+	int		ret;
+	DIR		*dir;
+	struct dirent	*files;
+	char		*tmp;
+
+	ret = 0;
+	tmp = ft_strdup(path);
+	path = ft_strjoin(tmp, name);
+	ft_strdel(&tmp);
+	if ((dir = opendir(path)) == NULL)
+		return (1);
+	else
+		while ((files = readdir(dir)) != NULL)
+			ret++;
+	(void)closedir(dir);
+	return (ret);
+}
+
+void	print_blocks(t_file **dir, int size, t_options *options)
 {
 	int ret;
 	int i;
@@ -8,84 +28,13 @@ void	print_blocks(t_file **dir, int size)
 	i = 0;
 	ret = 0;
 	while (i < size)
-		ret += dir[i++]->blocks;
+	{
+		if (!(options->a == 0 && dir[i]->name[0] == '.'))
+			ret += dir[i]->blocks;
+		i++;
+	}
 	ft_putstr("total ");
 	ft_intendl(ret);
-}
-
-int	single_files_ls(char **av, int begin, t_options *options)
-{
-	t_padding	*padding;
-	int 		size;
-	t_file		**dir = NULL;
-
-	padding = init_padding();
-	size = count_files(av, begin);
-	dir = init_dir(dir, size);
-	dir = fill_files(av, begin, size, dir);
-	sort_dir(dir, size);
-	if (options->t)
-		option_t(dir, size);
-	if (options->r)
-		reverse_dir(dir, size);
-	padding = fill_padding(padding, dir, size);
-	handle_options(dir, size, options, padding, 1);
-	return (0);
-}
-
-int	count_args(char **av, int begin)
-{
-	int i;
-	int ret;
-
-	i = begin;
-	ret = 0;
-	while (av[i++])
-		ret++;
-	return (ret);
-}
-
-void	sort_args(char **av, int begin)
-{
-	char	*tmp;
-	int 	i;
-
-	i = begin;
-	while (av[begin])
-	{
-		if (av[begin + 1])
-			if (ft_strcmp(av[begin], av[begin + 1]) > 0)
-			{
-				tmp = av[begin];
-				av[begin] = av[begin + 1];
-				av[begin + 1] = tmp;
-				begin = i;
-			}
-		begin++;
-	}
-	return ;
-}
-
-void	reverse_args(char **av)
-{
-	int	i;
-	int	end;
-	char	*tmp;
-	
-	i = 0;
-	end = 0;
-	while (av[end])
-		end++;
-	end--;
-	while (i < end)
-	{
-		tmp = av[i];
-		av[i] = av[end];
-		av[end] = tmp;
-		i++;
-		end--;
-	}
-	return ;
 }
 
 long	get_timestamp(char *dir)
@@ -111,24 +60,23 @@ int	next_dir_offset(char **av)
 		return (0);
 }
 
-void	sort_by_time(char **av, int begin)
+char	*valid_path(char *path)
 {
-	int	i;
-	int	nextdir;
+	int 	i;
 	char	*tmp;
 
-	i = begin;
-	nextdir = 0;
-	while (av[i])
-	{
-		if (valid_arg(av[i]) == 2 && (nextdir = next_dir_offset(&av[i])) != 0)
-			if (get_timestamp(av[i]) < get_timestamp(av[i + nextdir]))
-			{
-				tmp = av[i];
-				av[i] = av[i + nextdir];
-				av[i + nextdir] = tmp;
-				i = begin;
-			}
+	i = 0;
+	if (!path)
+		return (NULL);
+	while (path[i])
 		i++;
+	if (i == 1 || path[i] == '/')
+		return (path);
+	else
+	{
+		tmp = ft_strdup(path);
+		path = ft_strjoin(tmp, "/");
+		ft_strdel(&tmp);
+		return (path);
 	}
 }

@@ -1,0 +1,63 @@
+#include "ft_ls.h"
+
+void	sort_dir(t_file **dir, int size)
+{
+	int	i;
+	t_file	*tmp;
+
+	i = 0;
+	while (i < size - 1)
+	{
+		if(ft_strcmp(dir[i]->name, dir[i + 1]->name) > 0)
+		{
+			tmp = dir[i];
+			dir[i] = dir[i + 1];
+			dir[i + 1] = tmp;
+			if (i > 0)
+				i -= 1;
+		}
+		else
+			i++;
+	}
+}
+
+void	reverse_dir(t_file **dir, int size)
+{
+	int	i;
+	t_file	*tmp;
+
+	i = 0;
+	size--;
+	while (i < size)
+	{
+		tmp = dir[i];
+		dir[i] = dir[size];
+		dir[size] = tmp;
+		i++;
+		size--;
+	}
+	return ;
+}
+
+void	option_t(t_file **dir, int size)
+{
+	int	i;
+	t_file	*tmp;
+
+	i = 0;
+	while (i < size - 1)
+	{
+		if ((dir[i]->timestamp < dir[i + 1]->timestamp)
+				|| (dir[i]->timestamp == dir[i + 1]->timestamp
+					&& dir[i]->ntimestamp < dir[i + 1]->ntimestamp))
+		{
+			tmp = dir[i];
+			dir[i] = dir[i + 1];
+			dir[i + 1] = tmp;
+			if (i > 0)
+				i -= 1;
+		}
+		else
+			i++;
+	}
+}

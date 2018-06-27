@@ -62,13 +62,15 @@ int		option_l(t_file **dir, int filesize, t_options *options, t_padding *pad, in
 	int i;
 
 	i = 0;
+	if (dir == NULL)
+		return (1);
 	if (filesize > 1 && files == 0)
-		print_blocks(dir, filesize);
+		print_blocks(dir, filesize, options);
 	while (i < filesize)
 	{
 		if (!(options->a == 0 && dir[i]->name[0] == '.'))
 		{
-			if (ft_strcmp(dir[i]->perms, "----------") > 0)
+			if (dir[i]->user != NULL)
 			{
 				ft_putstr(dir[i]->perms);
 				print_spaces(pad->links - ft_nbrlen(dir[i]->links) + 1);
@@ -103,6 +105,8 @@ void		no_padding(t_file **dir, int size, t_options *options)
 	int i;
 
 	i = -1;
+	if (dir == NULL)
+		return ;
 	while (++i < size)
 		if (!(options->a == 0 && dir[i]->name[0] == '.'))
 			ft_putendl(dir[i]->name);

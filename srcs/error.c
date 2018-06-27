@@ -17,3 +17,10 @@ int	valid_arg(char *arg)
 	free(stats);
 	return (1);
 }
+
+void	perm_denied(char *file)
+{
+	ft_putstr("ft_ls: ");
+	ft_putstr(file);
+	ft_putstr(": Permission denied\n");
+}

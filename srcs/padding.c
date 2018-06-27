@@ -37,6 +37,8 @@ t_padding		*fill_padding(t_padding *padding, t_file **dir, int filesize)
 	int size;
 
 	i = 0;
+	if (dir == NULL)
+		return (NULL);
 	while (i < filesize)
 	{
 		links = ft_nbrlen(dir[i]->links);
