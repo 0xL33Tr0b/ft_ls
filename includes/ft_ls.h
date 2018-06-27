@@ -99,8 +99,11 @@ void				sort_by_time(char **av, int begin);
 void				option_R(t_file **dir, int size, t_options *options);
 void				free_file(t_file *dir);
 void				free_dir(t_file **dir, int size);
-void				perm_denied(char *file);
 int				next_dir_offset(char **av);
 long				get_timestamp(char *dir);
+void				not_permitted(char *file);
+void				perm_denied(t_file **dir, int size);
+void				illegal_option(char option);
+void				no_such_file(char *file);
 
 #endif

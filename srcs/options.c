@@ -9,13 +9,7 @@ void		fill_options(t_options *options, char *arg)
 	{
 		if (arg[i] != 'l' && arg[i] != 'R' && arg[i] != 'a' 
 				&& arg[i] != 'r' && arg[i] != 't')
-		{
-			ft_putstr("ft_ls: illegal option -- ");
-			ft_putchar(arg[i]);
-			ft_putchar('\n');
-			ft_putendl("usage: ft_ls [-lRart] [file ...]");
-			exit(-1);
-		}
+			illegal_option(arg[i]);
 		if(arg[i] == 'l')
 			options->l = 1;
 		if(arg[i] == 'R')
@@ -51,7 +45,7 @@ t_options	*init_options(int ac, char **av)
 	while (i < ac)
 	{
 		if (valid_arg(av[i]) == 0)
-			printf("ft_ls: %s%s", av[i], ": No such file or directory\n");
+			no_such_file(av[i]);
 		i++;
 	}
 	return (options);
@@ -95,6 +89,7 @@ int		option_l(t_file **dir, int filesize, t_options *options, t_padding *pad, in
 		}
 		i++;
 	}
+	perm_denied(dir, filesize);
 	if (options->R)
 		option_R(dir, filesize, options);
 	return (0);
@@ -108,8 +103,9 @@ void		no_padding(t_file **dir, int size, t_options *options)
 	if (dir == NULL)
 		return ;
 	while (++i < size)
-		if (!(options->a == 0 && dir[i]->name[0] == '.'))
+		if (!(options->a == 0 && dir[i]->name[0] == '.') && dir[i]->user != NULL)
 			ft_putendl(dir[i]->name);
+	perm_denied(dir, size);
 	if (options->R)
 		option_R(dir, size, options);
 }
@@ -146,4 +142,4 @@ void		handle_options(t_file **dir, int size, t_options *options, t_padding *pad,
 		option_l(dir, size, options, pad, files);
 	else
 		no_padding(dir, size, options);
-}
+}	

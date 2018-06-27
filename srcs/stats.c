@@ -25,6 +25,8 @@ char	*find_user(struct stat *stats)
 
 	if ((usr = getpwuid(stats->st_uid)) == NULL)
 		ret = ft_itoa(stats->st_uid);
+	else if (errno == EACCES)
+		return (NULL);
 	else
 		ret = ft_strdup(usr->pw_name);
 	if (ret == NULL)

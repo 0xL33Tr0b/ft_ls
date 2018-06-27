@@ -70,15 +70,10 @@ t_file	**fill_dir(t_file **dir, int size, char *path, t_options *options)
 			return (NULL);
 		if ((lstat(tmp, stats)) == -1)
 		{
-			dir[i]->name = ft_strdup(file->d_name);
-			dir[i]->perms = find_modes(stats);
-			dir[i]->user = NULL;
 			if (options->l)
-			{
-				ft_putstr("ft_ls: ");
-				ft_putstr(dir[i]->name);
-				ft_putendl(": Operation not permitted");
-			}
+				not_permitted(file->d_name);
+			dir[i]->name = ft_strdup(file->d_name);
+			dir[i]->size = -1;
 		}
 		else
 		{
@@ -119,11 +114,6 @@ t_file	**fill_files(char **av, int begin, int size, t_file **dir)
 				return (NULL);
 			if ((lstat(av[i], stats)) == -1)
 				return (NULL);
-			if (errno == EACCES)
-			{
-				perm_denied(av[i]);
-				return (NULL);
-			}
 			dir[j]->name = ft_strdup(av[i]);
 			dir[j]->perms = find_modes(stats);
 			dir[j]->links = stats->st_nlink;
