@@ -55,41 +55,17 @@ int		option_l(t_file **dir, int filesize, t_options *options, t_padding *pad, in
 {
 	int i;
 
-	i = 0;
+	i = -1;
 	if (dir == NULL)
 		return (1);
 	if (filesize > 1 && files == 0)
 		print_blocks(dir, filesize, options);
-	while (i < filesize)
+	while (++i < filesize)
 	{
 		if (!(options->a == 0 && dir[i]->name[0] == '.'))
-		{
-			if (dir[i]->user != NULL)
-			{
-				ft_putstr(dir[i]->perms);
-				print_spaces(pad->links - ft_nbrlen(dir[i]->links) + 1);
-				ft_putnbr(dir[i]->links);
-				print_spaces(pad->user - ft_strlen(dir[i]->user));
-				ft_putstr(dir[i]->user);
-				print_spaces(pad->group - ft_strlen(dir[i]->group) + 1);
-				ft_putstr(dir[i]->group);
-				print_spaces(pad->size - ft_nbrlen(dir[i]->size) + 1);
-				ft_putnbr(dir[i]->size);
-				print_spaces(0);
-				print_timestamp(dir[i]->timestamp);
-				print_spaces(0);
-				ft_putstr(dir[i]->name);
-				if (dir[i]->linkpath != NULL)
-				{
-					ft_putstr(" -> ");
-					ft_putstr(dir[i]->linkpath);
-				}
-				ft_putchar('\n');
-			}
-		}
-		i++;
+			if (dir[i]->error != 1337)
+				print_l(dir[i], pad);
 	}
-	perm_denied(dir, filesize);
 	if (options->R)
 		option_R(dir, filesize, options);
 	return (0);
@@ -103,9 +79,9 @@ void		no_padding(t_file **dir, int size, t_options *options)
 	if (dir == NULL)
 		return ;
 	while (++i < size)
-		if (!(options->a == 0 && dir[i]->name[0] == '.') && dir[i]->user != NULL)
-			ft_putendl(dir[i]->name);
-	perm_denied(dir, size);
+		if (!(options->a == 0 && dir[i]->name[0] == '.'))
+			if (dir[i]->error != 1337)
+				ft_putendl(dir[i]->name);
 	if (options->R)
 		option_R(dir, size, options);
 }
@@ -115,24 +91,25 @@ void		option_R(t_file **dir, int size, t_options *options)
 	int 	i;
 	char	*path;
 
-	i = 0;
-	while (i < size)
+	i = -1;
+	while (++i < size)
 	{
 		path = ft_strjoin(dir[0]->path, dir[i]->name);
 		if (!(options->a == 0 && dir[i]->name[0] == '.'))
 		{
-			if (valid_arg(path) == 2 && ft_strcmp(dir[i]->name, "./") > 0 && dir[i]->perms[0] != 'l')
+			if (ft_strcmp(dir[i]->name, "./") > 0 && dir[i]->perms[0] == 'd')
 			{
 				ft_putchar('\n');
 				ft_putstr(dir[0]->path);
 				ft_putstr(dir[i]->name);
 				ft_putstr(":\n");
-				neutral_ls(valid_path(path), options);
+				if (dir[i]->error != EACCES)
+					neutral_ls(valid_path(path), options);
+				else
+					perm_denied(dir[i]->name);
 			}
-
 		}
 		ft_strdel(&path);
-		i++;
 	}
 }
 

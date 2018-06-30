@@ -60,6 +60,7 @@ typedef struct		s_file
 	long			timestamp;
 	long			ntimestamp;
 	long			blocks;
+	int			error;
 }					t_file;
 
 char				*find_filetype(struct stat *file);
@@ -80,9 +81,10 @@ t_file				**init_dir(t_file **dir, int size);
 char				*find_user(struct stat *stats);
 char				*find_group(struct stat *stats);
 char				*find_link(char *path, char *name);
+int				find_error(char *file);
 void				print_timestamp(long timestamp);
 t_file				**fill_dir(t_file **dir, int size, char *path, t_options *options);
-t_file				**fill_files(char **av, int begin, int size, t_file **dir);
+t_file				**fill_files(char **av, int begin, int size, t_file **dir, t_options *options);
 int				valid_arg(char *arg);
 void				print_blocks(t_file **dir, int size, t_options *options);
 void				sort_dir(t_file **dir, int size);
@@ -102,8 +104,9 @@ void				free_dir(t_file **dir, int size);
 int				next_dir_offset(char **av);
 long				get_timestamp(char *dir);
 void				not_permitted(char *file);
-void				perm_denied(t_file **dir, int size);
+void				perm_denied(char *file);
 void				illegal_option(char option);
 void				no_such_file(char *file);
+void				print_l(t_file *file, t_padding *pad);
 
 #endif

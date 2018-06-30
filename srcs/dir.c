@@ -49,6 +49,25 @@ t_file	**init_dir(t_file **dir, int size)
 	return (NULL);
 }
 
+t_file	*fill_stats(t_file *dir, char *name, char *path, struct stat *stats, t_options *options)
+{	
+	if (options->l && dir->error == EPERM)
+		not_permitted(name);
+	dir->name = ft_strdup(name);
+	dir->path = path;
+	dir->perms = find_modes(stats);
+	dir->links = stats->st_nlink;
+	dir->linkpath = find_link(path, dir->name);
+	dir->user = find_user(stats);
+	dir->group = find_group(stats);
+	dir->size = stats->st_size;
+	dir->timestamp = stats->st_mtime;
+	dir->ntimestamp = stats->st_mtimespec.tv_nsec;
+	dir->blocks = stats->st_blocks;
+	return (dir);
+
+}
+
 t_file	**fill_dir(t_file **dir, int size, char *path, t_options *options)
 {
 	int		i;
@@ -68,36 +87,18 @@ t_file	**fill_dir(t_file **dir, int size, char *path, t_options *options)
 		tmp = ft_strjoin(path, file->d_name);
 		if ((stats = (struct stat *)malloc(sizeof(struct stat))) == NULL)
 			return (NULL);
-		if ((lstat(tmp, stats)) == -1)
-		{
-			if (options->l)
-				not_permitted(file->d_name);
-			dir[i]->name = ft_strdup(file->d_name);
-			dir[i]->size = -1;
-		}
-		else
-		{
-			dir[i]->name = ft_strdup(file->d_name);
-			dir[i]->path = dir[0]->path;
-			dir[i]->perms = find_modes(stats);
-			dir[i]->links = stats->st_nlink;
-			dir[i]->linkpath = find_link(dir[0]->path, dir[i]->name);
-			dir[i]->user = find_user(stats);
-			dir[i]->group = find_group(stats);
-			dir[i]->size = stats->st_size;
-			dir[i]->timestamp = stats->st_mtime;
-			dir[i]->ntimestamp = stats->st_mtimespec.tv_nsec;
-			dir[i]->blocks = stats->st_blocks;
-			ft_strdel(&tmp);
-		}
+		lstat(tmp, stats);
+		dir[i]->error = find_error(file->d_name);
+		dir[i] = fill_stats(dir[i], file->d_name, dir[0]->path, stats, options);
 		free(stats);
+		ft_strdel(&tmp);
 		i++;
 	}
 	(void)closedir(dirpointer);
 	return (dir);
 }
 
-t_file	**fill_files(char **av, int begin, int size, t_file **dir)
+t_file	**fill_files(char **av, int begin, int size, t_file **dir, t_options *options)
 {
 	int i;
 	int j;
@@ -112,17 +113,14 @@ t_file	**fill_files(char **av, int begin, int size, t_file **dir)
 		{
 			if ((stats = (struct stat *)malloc(sizeof(struct stat))) == NULL)
 				return (NULL);
-			if ((lstat(av[i], stats)) == -1)
-				return (NULL);
-			dir[j]->name = ft_strdup(av[i]);
-			dir[j]->perms = find_modes(stats);
-			dir[j]->links = stats->st_nlink;
-			dir[j]->user = find_user(stats);
-			dir[j]->group = find_group(stats);
-			dir[j]->size = stats->st_size;
-			dir[j]->timestamp = stats->st_mtime;
-			dir[j]->ntimestamp = stats->st_mtimespec.tv_nsec;
-			dir[j]->blocks = stats->st_blocks;
+			lstat(av[i], stats);
+			dir[j]->error = find_error(av[i]);
+			if (dir[j]->error == EACCES)
+			{
+				perm_denied(av[i]);
+				dir[j]->error = 1337;
+			}
+			dir[j] = fill_stats(dir[j], av[i], "", stats, options);
 			j++;
 			free(stats);
 		}

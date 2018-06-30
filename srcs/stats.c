@@ -18,6 +18,23 @@ char 	*find_modes(struct stat *file)
 	return (ret);
 }
 
+int	find_error(char *file)
+{
+	struct stat	*stats;
+	DIR		*dir;
+
+	dir = opendir(file);
+	if (errno == EACCES)
+		return (errno);
+	if (dir != NULL)
+		(void)closedir(dir);
+	if ((stats = malloc(sizeof(struct stat))) == NULL)
+		return (-1);
+	lstat(file, stats);
+	free(stats);
+	return (errno);
+}
+
 char	*find_user(struct stat *stats)
 {
 	struct passwd	*usr;
@@ -25,8 +42,6 @@ char	*find_user(struct stat *stats)
 
 	if ((usr = getpwuid(stats->st_uid)) == NULL)
 		ret = ft_itoa(stats->st_uid);
-	else if (errno == EACCES)
-		return (NULL);
 	else
 		ret = ft_strdup(usr->pw_name);
 	if (ret == NULL)

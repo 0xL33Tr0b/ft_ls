@@ -18,29 +18,11 @@ int	valid_arg(char *arg)
 	return (1);
 }
 
-void	perm_denied(t_file **dir, int size)
+void	perm_denied(char *file)
 {
-	int i;
-	int valid;
-	int trig;
-
-	i = -1;
-	valid = 0;
-	trig = 0;
-	while (++i < size)
-		if (dir[i]->user != NULL)
-			valid++;
-	i = -1;
-	while (++i < size)
-		if (dir[i]->user == NULL && dir[i]->size != -1)
-		{
-			if (trig == 0 && valid > 0)
-				ft_putchar('\n');
-			trig = 1;
 			ft_putstr("ft_ls: ");
-			ft_putstr(dir[i]->name);
+			ft_putstr(file);
 			ft_putstr(": Permission denied\n");
-		}
 }
 
 void	not_permitted(char *file)

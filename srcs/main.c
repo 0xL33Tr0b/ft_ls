@@ -45,7 +45,7 @@ int	single_files_ls(char **av, int begin, t_options *options)
 	padding = init_padding();
 	size = count_files(av, begin);
 	dir = init_dir(dir, size);
-	dir = fill_files(av, begin, size, dir);
+	dir = fill_files(av, begin, size, dir, options);
 	sort_dir(dir, size);
 	if (options->t)
 		option_t(dir, size);

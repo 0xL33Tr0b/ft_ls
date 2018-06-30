@@ -23,6 +23,7 @@ SRCS= ./srcs/main.c\
 	./srcs/args.c\
 	./srcs/sort.c\
 	./srcs/stats.c\
+	./srcs/print.c\
 
 OPTIONS= -Wall -Wextra -Werror
 DEBUGFLAG= -g3
