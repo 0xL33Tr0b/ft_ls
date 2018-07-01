@@ -12,6 +12,10 @@
 
 #include "ft_ls.h"
 
+/*
+	init_padding - mallocing a t_padding *
+*/
+
 t_padding		*init_padding(void)
 {
 	t_padding *padding;
@@ -27,6 +31,11 @@ t_padding		*init_padding(void)
 	padding->name = 0;
 	return (padding);
 }
+
+/*
+	fill_padding - fills t_padding * with max width of each
+	field of a t_file **
+*/
 
 t_padding		*fill_padding(t_padding *padding, t_file **dir, int filesize)
 {	
@@ -57,6 +66,10 @@ t_padding		*fill_padding(t_padding *padding, t_file **dir, int filesize)
 	}
 	return (padding);
 }
+
+/*
+	print_spaces - prints 'nb' spaces
+*/
 
 void			print_spaces(int nb)
 {

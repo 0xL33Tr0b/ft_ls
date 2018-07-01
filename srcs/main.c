@@ -12,7 +12,11 @@
 
 #include "ft_ls.h"
 
-int		neutral_ls(char *name, t_options *options)
+/*
+	ls - handling all structures for a directory
+*/
+
+int		ls(char *name, t_options *options)
 {
 	t_padding		*padding;
 	int			size;
@@ -36,6 +40,11 @@ int		neutral_ls(char *name, t_options *options)
 	return (0);
 }
 
+/*
+	single_files_ls - handling all structures
+	for the single files from char **av
+*/
+
 int	single_files_ls(char **av, int begin, t_options *options)
 {
 	t_padding	*padding;
@@ -55,6 +64,11 @@ int	single_files_ls(char **av, int begin, t_options *options)
 	handle_options(dir, size, options, padding, 1);
 	return (0);
 }
+
+/*
+	main - where the program starts, 
+	calling single_file_ls or ls regarding the args
+*/
 
 int	main(int ac, char **av)
 {

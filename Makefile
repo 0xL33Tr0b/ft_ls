@@ -34,7 +34,7 @@ GREEN = \033[1;32m
 BLUE = \033[1;34m
 RESET = \033[0m
 
-name:
+$(NAME):
 	@make -C libft
 	@$(CC) $(SRCS) $(INCLUDES) $(LIBFT) -o $(NAME) $(OPTIONS)
 	@echo "$(BLUE)\t\t\t\tft_ls has been built.$(RESET)"
@@ -53,4 +53,4 @@ fclean: clean
 
 re: fclean all
 
-all: name
+all: $(NAME)

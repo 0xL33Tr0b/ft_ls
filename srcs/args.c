@@ -1,5 +1,10 @@
 #include "ft_ls.h"
 
+/*
+	count_args - returns the number of args after
+		the options
+*/
+
 int	count_args(char **av, int begin)
 {
 	int i;
@@ -11,6 +16,10 @@ int	count_args(char **av, int begin)
 		ret++;
 	return (ret);
 }
+
+/*
+	sort_args - sorting char **av by ASCII order
+*/
 
 void	sort_args(char **av, int begin)
 {
@@ -32,6 +41,10 @@ void	sort_args(char **av, int begin)
 	}
 	return ;
 }
+
+/*
+	reverse_args - reversing char **av
+*/
 
 void	reverse_args(char **av)
 {
@@ -55,6 +68,11 @@ void	reverse_args(char **av)
 	return ;
 }
 
+/*
+	sort_by_time - sorting char **av valid args
+		by time of last modification
+*/
+
 void	sort_by_time(char **av, int begin)
 {
 	int	i;
@@ -77,6 +95,11 @@ void	sort_by_time(char **av, int begin)
 	}
 }
 
+/*
+	treat_args - sends single files from **av to single_file_ls
+		   - calls **av sorting funcs referring to options
+*/
+
 void	treat_args(char **av, int begin, t_options *options)
 {
 	single_files_ls(av, begin, options);
@@ -86,6 +109,10 @@ void	treat_args(char **av, int begin, t_options *options)
 		reverse_args(&av[begin]);
 	treat_dirs(av, begin, options);
 }
+
+/*
+	count_dirs - counts valid dirs in **av
+*/
 
 int	count_dirs(char **av, int begin)
 {
@@ -103,6 +130,10 @@ int	count_dirs(char **av, int begin)
 	return (dirs);
 }
 
+/*
+	count_files - counts valid files in **av
+*/
+
 int	count_files(char **av, int begin)
 {
 	int files;
@@ -118,6 +149,10 @@ int	count_files(char **av, int begin)
 	}
 	return (files);
 }
+
+/*
+	treat_dirs - sends valid dirs from **av to ls
+*/
 
 void	treat_dirs(char **av, int begin, t_options *options)
 {
@@ -139,7 +174,7 @@ void	treat_dirs(char **av, int begin, t_options *options)
 				ft_putstr(av[i]);
 				ft_putendl(":");
 			}
-			neutral_ls(valid_path(av[i]), options);
+			ls(valid_path(av[i]), options);
 			if (valid_arg(av[i + 1]) == 2)
 				ft_putchar('\n');
 		}

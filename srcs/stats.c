@@ -1,5 +1,10 @@
 #include "ft_ls.h"
 
+/*
+	find_modes - returning a char * with
+	permissions from file in format 'drwx------'
+*/
+
 char 	*find_modes(struct stat *file)
 {
 	char *ret;
@@ -18,6 +23,10 @@ char 	*find_modes(struct stat *file)
 	return (ret);
 }
 
+/*
+	find_error - returning errno from file accessing
+*/
+
 int	find_error(char *file)
 {
 	struct stat	*stats;
@@ -35,6 +44,11 @@ int	find_error(char *file)
 	return (errno);
 }
 
+/*
+	find_user - returning user from stats 
+	or itoaed one in case of failure
+*/
+
 char	*find_user(struct stat *stats)
 {
 	struct passwd	*usr;
@@ -48,6 +62,11 @@ char	*find_user(struct stat *stats)
 		return (NULL);
 	return (ret);
 }
+
+/*
+	find_group - returning group from stats
+	or itoaed one in case of failure
+*/
 
 char	*find_group(struct stat *stats)
 {
@@ -63,6 +82,11 @@ char	*find_group(struct stat *stats)
 	return (ret);
 }
 
+/*
+	find_link - returning the path contained by the symlink
+	or NULL if there is no one
+*/
+
 char	*find_link(char *path, char *file)
 {
 	char *buf;
@@ -77,18 +101,17 @@ char	*find_link(char *path, char *file)
 	return (buf);
 }
 
+/*
+	print_timestamp - printing timestamp from a file
+	in case of -l
+*/
+
 void	print_timestamp(long timestamp)
 {
 	char *ret;
 
-	if ((ret = (char *)malloc(sizeof(char) * 24)) == NULL)
+	if ((ret = ctime(&timestamp)) == NULL)
 		return ;
-	if ((ret = ctime_r(&timestamp, ret)) == NULL)
-	{
-		ft_strdel(&ret);
-		return ;
-	}
 	ret[16] = '\0';
 	ft_putstr(ret + 4);
-	ft_strdel(&ret);
 }

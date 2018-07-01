@@ -1,5 +1,9 @@
 #include "ft_ls.h"
 
+/*
+	print_l - prints one line/file from t_file * (-l)
+*/
+
 void	print_l(t_file *dir, t_padding *pad)
 {
 	ft_putstr(dir->perms);

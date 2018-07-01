@@ -1,5 +1,9 @@
 #include "ft_ls.h"
 
+/*
+	fill_options - fills t_options * from '-lRart'
+*/
+
 void		fill_options(t_options *options, char *arg)
 {
 	int i;
@@ -24,6 +28,10 @@ void		fill_options(t_options *options, char *arg)
 	}
 	return ;
 }
+
+/*
+	init_options - mallocing a t_options *
+*/
 
 t_options	*init_options(int ac, char **av)
 {
@@ -51,6 +59,10 @@ t_options	*init_options(int ac, char **av)
 	return (options);
 }
 
+/*
+	option_l - printing a t_file ** with -l
+*/
+
 int		option_l(t_file **dir, int filesize, t_options *options, t_padding *pad, int files)
 {
 	int i;
@@ -71,6 +83,10 @@ int		option_l(t_file **dir, int filesize, t_options *options, t_padding *pad, in
 	return (0);
 }
 
+/*
+	no_padding - prints a t_file ** without options
+*/
+
 void		no_padding(t_file **dir, int size, t_options *options)
 {
 	int i;
@@ -85,6 +101,11 @@ void		no_padding(t_file **dir, int size, t_options *options)
 	if (options->R)
 		option_R(dir, size, options);
 }
+
+/*
+	option_R - handles the -R listing all
+		directories recursively
+*/
 
 void		option_R(t_file **dir, int size, t_options *options)
 {
@@ -112,6 +133,10 @@ void		option_R(t_file **dir, int size, t_options *options)
 		ft_strdel(&path);
 	}
 }
+
+/*
+	handle_options - calls -l or not
+*/
 
 void		handle_options(t_file **dir, int size, t_options *options, t_padding *pad, int files)
 {

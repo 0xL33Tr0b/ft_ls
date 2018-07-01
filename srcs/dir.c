@@ -1,5 +1,9 @@
 #include "ft_ls.h"
 
+/*
+	free_file - freeing a t_file *
+*/
+
 void	free_file(t_file *dir)
 {
 	ft_strdel(&dir->name);
@@ -10,6 +14,10 @@ void	free_file(t_file *dir)
 	free(dir);
 }
 
+/*
+	free_dir - freeing a whole t_file **
+*/
+
 void	free_dir(t_file **dir, int size)
 {
 	int i;
@@ -19,6 +27,10 @@ void	free_dir(t_file **dir, int size)
 	while (i < size)
 		free_file(dir[i++]);
 }
+
+/*
+	init_dir - mallocing a t_file **
+*/
 
 t_file	**init_dir(t_file **dir, int size)
 {
@@ -49,6 +61,11 @@ t_file	**init_dir(t_file **dir, int size)
 	return (NULL);
 }
 
+/*
+	fill_stats - filling a t_file * with the struct stat
+		and the stats.c functions
+*/
+
 t_file	*fill_stats(t_file *dir, char *name, char *path, struct stat *stats, t_options *options)
 {	
 	if (options->l && dir->error == EPERM)
@@ -67,6 +84,11 @@ t_file	*fill_stats(t_file *dir, char *name, char *path, struct stat *stats, t_op
 	return (dir);
 
 }
+
+/*
+	fill_dir - filling a t_file ** with stats
+		for each file of the dir from ls
+*/
 
 t_file	**fill_dir(t_file **dir, int size, char *path, t_options *options)
 {
@@ -97,6 +119,11 @@ t_file	**fill_dir(t_file **dir, int size, char *path, t_options *options)
 	(void)closedir(dirpointer);
 	return (dir);
 }
+
+/*
+	fill_files - filling a t_file ** with the files
+		from single_file_ls
+*/
 
 t_file	**fill_files(char **av, int begin, int size, t_file **dir, t_options *options)
 {

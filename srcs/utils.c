@@ -1,5 +1,10 @@
 #include "ft_ls.h"
 
+/*
+	ft_dirlen - returns the number of files
+		in the specified directory
+*/
+
 int	ft_dirlen(char *name, char *path)
 {
 	int		ret;
@@ -20,6 +25,11 @@ int	ft_dirlen(char *name, char *path)
 	return (ret);
 }
 
+/*
+	print_blocks - prints the 'total 0' in -l
+		with the total number of blocks in a directory
+*/
+
 void	print_blocks(t_file **dir, int size, t_options *options)
 {
 	int ret;
@@ -37,6 +47,11 @@ void	print_blocks(t_file **dir, int size, t_options *options)
 	ft_intendl(ret);
 }
 
+/*
+	get_timestamp - returns the last modification
+		timestamp from a valid file or 0
+*/
+
 long	get_timestamp(char *dir)
 {
 	struct stat	*stats;
@@ -46,6 +61,12 @@ long	get_timestamp(char *dir)
 		return (0);
 	return (stats->st_mtime);
 }
+
+/*
+	next_dir_offset - returns the number of files
+		before the next dir in **av or 0
+		if there is no remaining ones
+*/
 
 int	next_dir_offset(char **av)
 {
@@ -59,6 +80,11 @@ int	next_dir_offset(char **av)
 	else
 		return (0);
 }
+
+/*
+	valid_path - adds a '/' to a path
+		if there is no one
+*/
 
 char	*valid_path(char *path)
 {

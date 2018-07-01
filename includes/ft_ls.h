@@ -26,6 +26,10 @@
 # include <dirent.h>
 # include "../libft/libft.h"
 
+/*
+	structure for storing options
+*/
+
 typedef struct		s_options
 {
 	int				l;
@@ -34,6 +38,11 @@ typedef struct		s_options
 	int				r;
 	int				t;
 }					t_options;
+
+/*
+	structure for storing the width
+	of the fields in '-l'
+*/
 
 typedef struct		s_padding
 {
@@ -46,6 +55,12 @@ typedef struct		s_padding
 	int				timestamp;
 	int				name;
 }					t_padding;
+
+/*
+	structure for storing all
+	the fields of a directory
+	or a file
+*/
 
 typedef struct		s_file
 {

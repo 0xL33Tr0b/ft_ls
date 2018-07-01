@@ -1,5 +1,9 @@
 #include "ft_ls.h"
 
+/*
+	sort_dir - sorts a t_file ** by ASCII order
+*/
+
 void	sort_dir(t_file **dir, int size)
 {
 	int	i;
@@ -21,6 +25,10 @@ void	sort_dir(t_file **dir, int size)
 	}
 }
 
+/*
+	reverse_dir - reverses a t_file **
+*/
+
 void	reverse_dir(t_file **dir, int size)
 {
 	int	i;
@@ -38,6 +46,10 @@ void	reverse_dir(t_file **dir, int size)
 	}
 	return ;
 }
+
+/*
+	option_t - sorts a t_file ** by time of last modification
+*/
 
 void	option_t(t_file **dir, int size)
 {
