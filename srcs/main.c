@@ -80,7 +80,7 @@ int	main(int ac, char **av)
 	while (av[counter] && av[counter][0] == '-')
 		counter++;
 	if ((ac - counter) == 0)
-		return (neutral_ls("./", options));
+		return (ls("./", options));
 	if ((ac - counter) > 0)
 		treat_args(av, counter, options);
 	return (0);

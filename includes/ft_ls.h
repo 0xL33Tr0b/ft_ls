@@ -85,7 +85,7 @@ void				option_t(t_file **dir, int size);
 void				no_padding(t_file **dir, int size, t_options *options);
 void					handle_options(t_file **dir, int size, t_options *options,  t_padding *pad, int files);
 char				*valid_path(char *path);
-int					neutral_ls(char *name, t_options *options);
+int					ls(char *name, t_options *options);
 t_options			*init_options(int ac, char **av);
 void				fill_options(t_options *options, char *arg);
 t_padding			*init_padding(void);

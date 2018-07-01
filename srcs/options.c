@@ -125,7 +125,7 @@ void		option_R(t_file **dir, int size, t_options *options)
 				ft_putstr(dir[i]->name);
 				ft_putstr(":\n");
 				if (dir[i]->error != EACCES)
-					neutral_ls(valid_path(path), options);
+					ls(valid_path(path), options);
 				else
 					perm_denied(dir[i]->name);
 			}
