@@ -1,28 +1,40 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   options.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: rdurst <marvin@42.fr>                      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2018/07/02 13:19:43 by rdurst            #+#    #+#             */
+/*   Updated: 2018/07/02 13:33:10 by rdurst           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "ft_ls.h"
 
 /*
-	fill_options - fills t_opts * from '-lRart'
+**	fill_options - fills t_opts * from '-lRart'
 */
 
-void		fill_options(t_opts *options, char *arg)
+void	fill_options(t_opts *options, char *arg)
 {
 	int i;
 
 	i = 1;
 	while (arg[i])
 	{
-		if (arg[i] != 'l' && arg[i] != 'R' && arg[i] != 'a' 
+		if (arg[i] != 'l' && arg[i] != 'R' && arg[i] != 'a'
 				&& arg[i] != 'r' && arg[i] != 't')
 			illegal_option(arg[i]);
-		if(arg[i] == 'l')
+		if (arg[i] == 'l')
 			options->l = 1;
-		if(arg[i] == 'R')
+		if (arg[i] == 'R')
 			options->rec = 1;
-		if(arg[i] == 'a')
+		if (arg[i] == 'a')
 			options->a = 1;
-		if(arg[i] == 'r')
+		if (arg[i] == 'r')
 			options->r = 1;
-		if(arg[i] == 't')
+		if (arg[i] == 't')
 			options->t = 1;
 		i++;
 	}
@@ -30,7 +42,7 @@ void		fill_options(t_opts *options, char *arg)
 }
 
 /*
-	init_opts - mallocing a t_opts *
+**	init_opts - mallocing a t_opts *
 */
 
 t_opts	*init_opts(int ac, char **av)
@@ -60,34 +72,34 @@ t_opts	*init_opts(int ac, char **av)
 }
 
 /*
-	option_l - printing a t_file ** with -l
+**	option_l - printing a t_file ** with -l
 */
 
-int		option_l(t_file **dir, int filesize, t_opts *options, t_pad *pad, int files)
+int		option_l(t_file **dir, int size, t_opts *opts, t_pad *pad, int files)
 {
 	int i;
 
 	i = -1;
 	if (dir == NULL)
 		return (1);
-	if (filesize > 1 && files == 0)
-		print_blocks(dir, filesize, options);
+	if (size > 1 && files == 0)
+		print_blocks(dir, size, opts);
 	while (++i < filesize)
 	{
-		if (!(options->a == 0 && dir[i]->name[0] == '.'))
+		if (!(opts->a == 0 && dir[i]->name[0] == '.'))
 			if (dir[i]->error != 1337)
 				print_l(dir[i], pad);
 	}
-	if (options->rec)
-		option_rec(dir, filesize, options);
+	if (opts->rec)
+		option_rec(dir, size, opts);
 	return (0);
 }
 
 /*
-	no_padding - prints a t_file ** without options
+**	no_padding - prints a t_file ** without options
 */
 
-void		no_padding(t_file **dir, int size, t_opts *options)
+void	no_padding(t_file **dir, int size, t_opts *options)
 {
 	int i;
 
@@ -103,13 +115,13 @@ void		no_padding(t_file **dir, int size, t_opts *options)
 }
 
 /*
-	option_rec - handles the -R listing all
-		directories recursively
+**	option_rec - handles the -R listing all
+**		directories recursively
 */
 
-void		option_rec(t_file **dir, int size, t_opts *options)
+void	option_rec(t_file **dir, int size, t_opts *options)
 {
-	int 	i;
+	int		i;
 	char	*path;
 
 	i = -1;
@@ -135,13 +147,13 @@ void		option_rec(t_file **dir, int size, t_opts *options)
 }
 
 /*
-	opts - calls -l or not
+**	opts - calls -l or not
 */
 
-void		opts(t_file **dir, int size, t_opts *options, t_pad *pad, int files)
+void	opts(t_file **dir, int size, t_opts *options, t_pad *pad, int files)
 {
 	if (options->l == 1)
 		option_l(dir, size, options, pad, files);
 	else
 		no_padding(dir, size, options);
-}	
+}

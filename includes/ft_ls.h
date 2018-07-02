@@ -6,7 +6,7 @@
 /*   By: rdurst <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/14 16:31:22 by rdurst            #+#    #+#             */
-/*   Updated: 2018/07/02 11:11:58 by rdurst           ###   ########.fr       */
+/*   Updated: 2018/07/02 13:31:56 by rdurst           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,8 @@ typedef struct		s_file
 	long			blocks;
 	int				error;
 }					t_file;
+
+typedef struct stat st;
 
 char				*find_filetype(struct stat *file);
 char				*find_modes(struct stat *file);

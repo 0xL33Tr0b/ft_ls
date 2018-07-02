@@ -6,17 +6,17 @@
 /*   By: rdurst <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/17 16:22:49 by rdurst            #+#    #+#             */
-/*   Updated: 2018/07/02 11:15:56 by rdurst           ###   ########.fr       */
+/*   Updated: 2018/07/02 13:28:03 by rdurst           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 
 /*
-	init_pad - mallocing a t_pad *
+**	init_pad - mallocing a t_pad *
 */
 
-t_pad		*init_pad(void)
+t_pad	*init_pad(void)
 {
 	t_pad *padding;
 
@@ -33,12 +33,12 @@ t_pad		*init_pad(void)
 }
 
 /*
-	fill_padding - fills t_pad * with max width of each
-	field of a t_file **
+**	fill_padding - fills t_pad * with max width of each
+**	field of a t_file **
 */
 
-t_pad		*fill_padding(t_pad *padding, t_file **dir, int filesize)
-{	
+t_pad	*fill_padding(t_pad *padding, t_file **dir, int filesize)
+{
 	int i;
 	int links;
 	int user;
@@ -68,10 +68,10 @@ t_pad		*fill_padding(t_pad *padding, t_file **dir, int filesize)
 }
 
 /*
-	print_spaces - prints 'nb' spaces
+**	print_spaces - prints 'nb' spaces
 */
 
-void			print_spaces(int nb)
+void	print_spaces(int nb)
 {
 	int i;
 

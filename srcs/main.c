@@ -6,22 +6,23 @@
 /*   By: rdurst <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/17 16:13:57 by rdurst            #+#    #+#             */
-/*   Updated: 2018/07/02 11:15:29 by rdurst           ###   ########.fr       */
+/*   Updated: 2018/07/02 13:19:07 by rdurst           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 
 /*
-	ls - handling all structures for a directory
+**	ls - handling all structures for a directory
 */
 
 int		ls(char *name, t_opts *options)
 {
-	t_pad		*padding;
-	int			size;
-	t_file			**dir = NULL;
+	t_pad	*padding;
+	int		size;
+	t_file	**dir;
 
+	dir = NULL;
 	if (valid_arg(name) == 0 || valid_arg(name) == 1)
 		return (1);
 	padding = init_pad();
@@ -41,16 +42,17 @@ int		ls(char *name, t_opts *options)
 }
 
 /*
-	single_files_ls - handling all structures
-	for the single files from char **av
+**	single_files_ls - handling all structures
+**	for the single files from char **av
 */
 
-int	single_files_ls(char **av, int begin, t_opts *options)
+int		single_files_ls(char **av, int begin, t_opts *options)
 {
 	t_pad	*padding;
-	int 		size;
-	t_file		**dir = NULL;
+	int		size;
+	t_file	**dir;
 
+	dir = NULL;
 	padding = init_pad();
 	size = count_files(av, begin);
 	dir = init_dir(dir, size);
@@ -66,11 +68,11 @@ int	single_files_ls(char **av, int begin, t_opts *options)
 }
 
 /*
-	main - where the program starts, 
-	calling single_file_ls or ls regarding the args
+**	main - where the program starts,
+**	calling single_file_ls or ls regarding the args
 */
 
-int	main(int ac, char **av)
+int		main(int ac, char **av)
 {
 	int		counter;
 	t_opts	*options;

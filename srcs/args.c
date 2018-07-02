@@ -1,11 +1,23 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   args.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: rdurst <marvin@42.fr>                      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2018/07/02 13:35:13 by rdurst            #+#    #+#             */
+/*   Updated: 2018/07/02 13:37:54 by rdurst           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "ft_ls.h"
 
 /*
-	count_args - returns the number of args after
-		the options
+**	count_args - returns the number of args after
+**		the options
 */
 
-int	count_args(char **av, int begin)
+int		count_args(char **av, int begin)
 {
 	int i;
 	int ret;
@@ -18,13 +30,13 @@ int	count_args(char **av, int begin)
 }
 
 /*
-	sort_args - sorting char **av by ASCII order
+**	sort_args - sorting char **av by ASCII order
 */
 
 void	sort_args(char **av, int begin)
 {
 	char	*tmp;
-	int 	i;
+	int		i;
 
 	i = begin;
 	while (av[begin])
@@ -43,13 +55,13 @@ void	sort_args(char **av, int begin)
 }
 
 /*
-	reverse_args - reversing char **av
+**	reverse_args - reversing char **av
 */
 
 void	reverse_args(char **av)
 {
-	int	i;
-	int	end;
+	int		i;
+	int		end;
 	char	*tmp;
 
 	i = 0;
@@ -69,14 +81,14 @@ void	reverse_args(char **av)
 }
 
 /*
-	sort_by_time - sorting char **av valid args
-		by time of last modification
+**	sort_by_time - sorting char **av valid args
+**		by time of last modification
 */
 
 void	sort_by_time(char **av, int begin)
 {
-	int	i;
-	int	nextdir;
+	int		i;
+	int		nextdir;
 	char	*tmp;
 
 	i = begin;
@@ -96,8 +108,8 @@ void	sort_by_time(char **av, int begin)
 }
 
 /*
-	treat_args - sends single files from **av to single_file_ls
-		   - calls **av sorting funcs referring to options
+**	treat_args - sends single files from **av to single_file_ls
+**		   - calls **av sorting funcs referring to options
 */
 
 void	treat_args(char **av, int begin, t_opts *options)
@@ -111,10 +123,10 @@ void	treat_args(char **av, int begin, t_opts *options)
 }
 
 /*
-	count_dirs - counts valid dirs in **av
+**	count_dirs - counts valid dirs in **av
 */
 
-int	count_dirs(char **av, int begin)
+int		count_dirs(char **av, int begin)
 {
 	int dirs;
 	int i;
@@ -131,10 +143,10 @@ int	count_dirs(char **av, int begin)
 }
 
 /*
-	count_files - counts valid files in **av
+**	count_files - counts valid files in **av
 */
 
-int	count_files(char **av, int begin)
+int		count_files(char **av, int begin)
 {
 	int files;
 	int i;
@@ -151,7 +163,7 @@ int	count_files(char **av, int begin)
 }
 
 /*
-	treat_dirs - sends valid dirs from **av to ls
+**	treat_dirs - sends valid dirs from **av to ls
 */
 
 void	treat_dirs(char **av, int begin, t_opts *options)
@@ -165,7 +177,7 @@ void	treat_dirs(char **av, int begin, t_opts *options)
 	dirs = count_dirs(av, begin);
 	if (files > 0 && dirs > 0)
 		ft_putchar('\n');
-	while(av[i])
+	while (av[i])
 	{
 		if (valid_arg(av[i]) == 2)
 		{
@@ -178,6 +190,6 @@ void	treat_dirs(char **av, int begin, t_opts *options)
 			if (valid_arg(av[i + 1]) == 2)
 				ft_putchar('\n');
 		}
-	i++;
+		i++;
 	}
 }

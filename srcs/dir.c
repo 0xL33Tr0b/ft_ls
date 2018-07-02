@@ -1,7 +1,19 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   dir.c                                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: rdurst <marvin@42.fr>                      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2018/07/02 13:29:16 by rdurst            #+#    #+#             */
+/*   Updated: 2018/07/02 13:34:48 by rdurst           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "ft_ls.h"
 
 /*
-	free_file - freeing a t_file *
+**	free_file - freeing a t_file *
 */
 
 void	free_file(t_file *dir)
@@ -15,7 +27,7 @@ void	free_file(t_file *dir)
 }
 
 /*
-	free_dir - freeing a whole t_file **
+**	free_dir - freeing a whole t_file **
 */
 
 void	free_dir(t_file **dir, int size)
@@ -29,7 +41,7 @@ void	free_dir(t_file **dir, int size)
 }
 
 /*
-	init_dir - mallocing a t_file **
+**	init_dir - mallocing a t_file **
 */
 
 t_file	**init_dir(t_file **dir, int size)
@@ -37,7 +49,7 @@ t_file	**init_dir(t_file **dir, int size)
 	int i;
 
 	i = 0;
-	if((dir = (t_file **)malloc(sizeof(t_file*) * size)) == NULL)
+	if ((dir = (t_file **)malloc(sizeof(t_file*) * size)) == NULL)
 		return (NULL);
 	while (i < size)
 	{
@@ -62,13 +74,13 @@ t_file	**init_dir(t_file **dir, int size)
 }
 
 /*
-	fill_stats - filling a t_file * with the struct stat
-		and the stats.c functions
+**	fill_stats - filling a t_file * with the struct stat
+**		and the stats.c functions
 */
 
-t_file	*fill_stats(t_file *dir, char *name, char *path, struct stat *stats, t_opts *options)
-{	
-	if (options->l && dir->error == EPERM)
+t_file	*fill_stats(t_file *dir, char *name, char *path, st *stats, t_opts *opts)
+{
+	if (opts->l && dir->error == EPERM)
 		not_permitted(name);
 	dir->name = ft_strdup(name);
 	dir->path = path;
@@ -82,21 +94,20 @@ t_file	*fill_stats(t_file *dir, char *name, char *path, struct stat *stats, t_op
 	dir->ntimestamp = stats->st_mtimespec.tv_nsec;
 	dir->blocks = stats->st_blocks;
 	return (dir);
-
 }
 
 /*
-	fill_dir - filling a t_file ** with stats
-		for each file of the dir from ls
+**	fill_dir - filling a t_file ** with stats
+**		for each file of the dir from ls
 */
 
 t_file	**fill_dir(t_file **dir, int size, char *path, t_opts *options)
 {
-	int		i;
+	int				i;
 	struct dirent	*file;
-	struct stat	*stats;
-	DIR		*dirpointer;
-	char		*tmp;
+	struct stat		*stats;
+	DIR				*dirpointer;
+	char			*tmp;
 
 	i = 0;
 	if ((dirpointer = opendir(path)) == NULL)
@@ -121,15 +132,15 @@ t_file	**fill_dir(t_file **dir, int size, char *path, t_opts *options)
 }
 
 /*
-	sfiles - filling a t_file ** with the files
-		from single_file_ls
+**	sfiles - filling a t_file ** with the files
+**		from single_file_ls
 */
 
 t_file	**sfiles(char **av, int begin, int size, t_file **dir, t_opts *options)
 {
-	int i;
-	int j;
-	struct stat *stats;
+	int			i;
+	int			j;
+	struct stat	*stats;
 
 	i = begin;
 	j = 0;

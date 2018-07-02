@@ -6,7 +6,7 @@
 /*   By: rdurst <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/02 12:48:11 by rdurst            #+#    #+#             */
-/*   Updated: 2018/07/02 12:48:39 by rdurst           ###   ########.fr       */
+/*   Updated: 2018/07/02 13:16:31 by rdurst           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,9 @@
 **		     accessed or doesnt exist
 */
 
-int	valid_arg(char *arg)
+int		valid_arg(char *arg)
 {
-	DIR		*dir;
+	DIR			*dir;
 	struct stat	*stats;
 
 	stats = NULL;
@@ -43,9 +43,9 @@ int	valid_arg(char *arg)
 
 void	perm_denied(char *file)
 {
-			ft_putstr("ft_ls: ");
-			ft_putstr(file);
-			ft_putstr(": Permission denied\n");
+	ft_putstr("ft_ls: ");
+	ft_putstr(file);
+	ft_putstr(": Permission denied\n");
 }
 
 /*

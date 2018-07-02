@@ -1,18 +1,30 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   sort.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: rdurst <marvin@42.fr>                      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2018/07/02 13:28:20 by rdurst            #+#    #+#             */
+/*   Updated: 2018/07/02 13:29:07 by rdurst           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "ft_ls.h"
 
 /*
-	sort_dir - sorts a t_file ** by ASCII order
+**	sort_dir - sorts a t_file ** by ASCII order
 */
 
 void	sort_dir(t_file **dir, int size)
 {
-	int	i;
+	int		i;
 	t_file	*tmp;
 
 	i = 0;
 	while (i < size - 1)
 	{
-		if(ft_strcmp(dir[i]->name, dir[i + 1]->name) > 0)
+		if (ft_strcmp(dir[i]->name, dir[i + 1]->name) > 0)
 		{
 			tmp = dir[i];
 			dir[i] = dir[i + 1];
@@ -26,12 +38,12 @@ void	sort_dir(t_file **dir, int size)
 }
 
 /*
-	reverse_dir - reverses a t_file **
+**	reverse_dir - reverses a t_file **
 */
 
 void	reverse_dir(t_file **dir, int size)
 {
-	int	i;
+	int		i;
 	t_file	*tmp;
 
 	i = 0;
@@ -48,12 +60,12 @@ void	reverse_dir(t_file **dir, int size)
 }
 
 /*
-	option_t - sorts a t_file ** by time of last modification
+**	option_t - sorts a t_file ** by time of last modification
 */
 
 void	option_t(t_file **dir, int size)
 {
-	int	i;
+	int		i;
 	t_file	*tmp;
 
 	i = 0;
