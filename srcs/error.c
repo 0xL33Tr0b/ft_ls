@@ -1,10 +1,22 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   error.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: rdurst <marvin@42.fr>                      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2018/07/02 12:48:11 by rdurst            #+#    #+#             */
+/*   Updated: 2018/07/02 12:48:39 by rdurst           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "ft_ls.h"
 
 /*
-	valid_arg - returning 2 if arg is a directory
-		  - returning 1 if arg is a file
-		  - returning 0 if arg cannot be
-		     accessed or doesnt exist
+**	valid_arg - returning 2 if arg is a directory
+**		  - returning 1 if arg is a file
+**		  - returning 0 if arg cannot be
+**		     accessed or doesnt exist
 */
 
 int	valid_arg(char *arg)
@@ -26,7 +38,7 @@ int	valid_arg(char *arg)
 }
 
 /*
-	perm_denied - printing EACCES permission error
+**	perm_denied - printing EACCES permission error
 */
 
 void	perm_denied(char *file)
@@ -37,7 +49,7 @@ void	perm_denied(char *file)
 }
 
 /*
-	not_permitted - printing EAPERM permission error
+**	not_permitted - printing EAPERM permission error
 */
 
 void	not_permitted(char *file)
@@ -48,8 +60,8 @@ void	not_permitted(char *file)
 }
 
 /*
-	illegal_option - printing usage
-	in case of invalid options
+**	illegal_option - printing usage
+**	in case of invalid options
 */
 
 void	illegal_option(char option)
@@ -62,7 +74,7 @@ void	illegal_option(char option)
 }
 
 /*
-	no_such_file - printing missing file error
+**	no_such_file - printing missing file error
 */
 
 void	no_such_file(char *file)

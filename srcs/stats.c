@@ -1,16 +1,31 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   stats.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: rdurst <marvin@42.fr>                      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2018/07/02 12:40:29 by rdurst            #+#    #+#             */
+/*   Updated: 2018/07/02 12:47:42 by rdurst           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "ft_ls.h"
 
 /*
-	find_modes - returning a char * with
-	permissions from file in format 'drwx------'
+**	find_modes - returning a char * with
+**	permissions from file in format 'drwx------'
 */
 
-char 	*find_modes(struct stat *file)
+char	*find_modes(struct stat *file)
 {
 	char *ret;
 
 	ret = ft_strnew(10);
-	ret[0] = (S_ISLNK(file->st_mode) ? 'l' : (S_ISDIR(file->st_mode) ? 'd' : '-'));
+	if (S_ISLNK(file->st_mode))
+		ret[0] = 'l';
+	else
+		ret[0] = S_ISDIR(file->st_mode) ? 'd' : '-';
 	ret[1] = (file->st_mode & S_IRUSR ? 'r' : '-');
 	ret[2] = (file->st_mode & S_IWUSR ? 'w' : '-');
 	ret[3] = (file->st_mode & S_IXUSR ? 'x' : '-');
@@ -24,13 +39,13 @@ char 	*find_modes(struct stat *file)
 }
 
 /*
-	find_error - returning errno from file accessing
+**	find_error - returning errno from file accessing
 */
 
-int	find_error(char *file)
+int		find_error(char *file)
 {
 	struct stat	*stats;
-	DIR		*dir;
+	DIR			*dir;
 
 	dir = opendir(file);
 	if (errno == EACCES)
@@ -45,14 +60,14 @@ int	find_error(char *file)
 }
 
 /*
-	find_user - returning user from stats 
-	or itoaed one in case of failure
+**	find_user - returning user from stats
+**	or itoaed one in case of failure
 */
 
 char	*find_user(struct stat *stats)
 {
 	struct passwd	*usr;
-	char		*ret;
+	char			*ret;
 
 	if ((usr = getpwuid(stats->st_uid)) == NULL)
 		ret = ft_itoa(stats->st_uid);
@@ -64,18 +79,18 @@ char	*find_user(struct stat *stats)
 }
 
 /*
-	find_group - returning group from stats
-	or itoaed one in case of failure
+**	find_group - returning group from stats
+**	or itoaed one in case of failure
 */
 
 char	*find_group(struct stat *stats)
 {
 	struct group	*grp;
-	char		*ret;
+	char			*ret;
 
-	if ((grp = getgrgid(stats->st_gid)) == NULL) 
+	if ((grp = getgrgid(stats->st_gid)) == NULL)
 		ret = ft_itoa(stats->st_gid);
-	else 
+	else
 		ret = ft_strdup(grp->gr_name);
 	if (ret == NULL)
 		return (NULL);
@@ -83,8 +98,8 @@ char	*find_group(struct stat *stats)
 }
 
 /*
-	find_link - returning the path contained by the symlink
-	or NULL if there is no one
+**	find_link - returning the path contained by the symlink
+**	or NULL if there is no one
 */
 
 char	*find_link(char *path, char *file)
@@ -102,8 +117,8 @@ char	*find_link(char *path, char *file)
 }
 
 /*
-	print_timestamp - printing timestamp from a file
-	in case of -l
+**	print_timestamp - printing timestamp from a file
+**	in case of -l
 */
 
 void	print_timestamp(long timestamp)
