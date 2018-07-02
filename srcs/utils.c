@@ -30,7 +30,7 @@ int	ft_dirlen(char *name, char *path)
 		with the total number of blocks in a directory
 */
 
-void	print_blocks(t_file **dir, int size, t_options *options)
+void	print_blocks(t_file **dir, int size, t_opts *options)
 {
 	int ret;
 	int i;

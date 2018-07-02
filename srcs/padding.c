@@ -6,21 +6,21 @@
 /*   By: rdurst <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/17 16:22:49 by rdurst            #+#    #+#             */
-/*   Updated: 2018/05/17 17:53:23 by rdurst           ###   ########.fr       */
+/*   Updated: 2018/07/02 11:15:56 by rdurst           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 
 /*
-	init_padding - mallocing a t_padding *
+	init_pad - mallocing a t_pad *
 */
 
-t_padding		*init_padding(void)
+t_pad		*init_pad(void)
 {
-	t_padding *padding;
+	t_pad *padding;
 
-	padding = malloc(sizeof(t_padding));
+	padding = malloc(sizeof(t_pad));
 	padding->directory_number = 0;
 	padding->perms = 0;
 	padding->links = 0;
@@ -33,11 +33,11 @@ t_padding		*init_padding(void)
 }
 
 /*
-	fill_padding - fills t_padding * with max width of each
+	fill_padding - fills t_pad * with max width of each
 	field of a t_file **
 */
 
-t_padding		*fill_padding(t_padding *padding, t_file **dir, int filesize)
+t_pad		*fill_padding(t_pad *padding, t_file **dir, int filesize)
 {	
 	int i;
 	int links;

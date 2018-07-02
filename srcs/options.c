@@ -1,10 +1,10 @@
 #include "ft_ls.h"
 
 /*
-	fill_options - fills t_options * from '-lRart'
+	fill_options - fills t_opts * from '-lRart'
 */
 
-void		fill_options(t_options *options, char *arg)
+void		fill_options(t_opts *options, char *arg)
 {
 	int i;
 
@@ -17,7 +17,7 @@ void		fill_options(t_options *options, char *arg)
 		if(arg[i] == 'l')
 			options->l = 1;
 		if(arg[i] == 'R')
-			options->R = 1;
+			options->rec = 1;
 		if(arg[i] == 'a')
 			options->a = 1;
 		if(arg[i] == 'r')
@@ -30,19 +30,19 @@ void		fill_options(t_options *options, char *arg)
 }
 
 /*
-	init_options - mallocing a t_options *
+	init_opts - mallocing a t_opts *
 */
 
-t_options	*init_options(int ac, char **av)
+t_opts	*init_opts(int ac, char **av)
 {
 	int		i;
 	int		tmp;
-	t_options	*options;
+	t_opts	*options;
 
 	i = 1;
-	options = (t_options *)malloc(sizeof(t_options));
+	options = (t_opts *)malloc(sizeof(t_opts));
 	options->l = 0;
-	options->R = 0;
+	options->rec = 0;
 	options->a = 0;
 	options->r = 0;
 	options->t = 0;
@@ -63,7 +63,7 @@ t_options	*init_options(int ac, char **av)
 	option_l - printing a t_file ** with -l
 */
 
-int		option_l(t_file **dir, int filesize, t_options *options, t_padding *pad, int files)
+int		option_l(t_file **dir, int filesize, t_opts *options, t_pad *pad, int files)
 {
 	int i;
 
@@ -78,8 +78,8 @@ int		option_l(t_file **dir, int filesize, t_options *options, t_padding *pad, in
 			if (dir[i]->error != 1337)
 				print_l(dir[i], pad);
 	}
-	if (options->R)
-		option_R(dir, filesize, options);
+	if (options->rec)
+		option_rec(dir, filesize, options);
 	return (0);
 }
 
@@ -87,7 +87,7 @@ int		option_l(t_file **dir, int filesize, t_options *options, t_padding *pad, in
 	no_padding - prints a t_file ** without options
 */
 
-void		no_padding(t_file **dir, int size, t_options *options)
+void		no_padding(t_file **dir, int size, t_opts *options)
 {
 	int i;
 
@@ -98,16 +98,16 @@ void		no_padding(t_file **dir, int size, t_options *options)
 		if (!(options->a == 0 && dir[i]->name[0] == '.'))
 			if (dir[i]->error != 1337)
 				ft_putendl(dir[i]->name);
-	if (options->R)
-		option_R(dir, size, options);
+	if (options->rec)
+		option_rec(dir, size, options);
 }
 
 /*
-	option_R - handles the -R listing all
+	option_rec - handles the -R listing all
 		directories recursively
 */
 
-void		option_R(t_file **dir, int size, t_options *options)
+void		option_rec(t_file **dir, int size, t_opts *options)
 {
 	int 	i;
 	char	*path;
@@ -135,10 +135,10 @@ void		option_R(t_file **dir, int size, t_options *options)
 }
 
 /*
-	handle_options - calls -l or not
+	opts - calls -l or not
 */
 
-void		handle_options(t_file **dir, int size, t_options *options, t_padding *pad, int files)
+void		opts(t_file **dir, int size, t_opts *options, t_pad *pad, int files)
 {
 	if (options->l == 1)
 		option_l(dir, size, options, pad, files);

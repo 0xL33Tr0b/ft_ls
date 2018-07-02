@@ -66,7 +66,7 @@ t_file	**init_dir(t_file **dir, int size)
 		and the stats.c functions
 */
 
-t_file	*fill_stats(t_file *dir, char *name, char *path, struct stat *stats, t_options *options)
+t_file	*fill_stats(t_file *dir, char *name, char *path, struct stat *stats, t_opts *options)
 {	
 	if (options->l && dir->error == EPERM)
 		not_permitted(name);
@@ -90,7 +90,7 @@ t_file	*fill_stats(t_file *dir, char *name, char *path, struct stat *stats, t_op
 		for each file of the dir from ls
 */
 
-t_file	**fill_dir(t_file **dir, int size, char *path, t_options *options)
+t_file	**fill_dir(t_file **dir, int size, char *path, t_opts *options)
 {
 	int		i;
 	struct dirent	*file;
@@ -121,11 +121,11 @@ t_file	**fill_dir(t_file **dir, int size, char *path, t_options *options)
 }
 
 /*
-	fill_files - filling a t_file ** with the files
+	sfiles - filling a t_file ** with the files
 		from single_file_ls
 */
 
-t_file	**fill_files(char **av, int begin, int size, t_file **dir, t_options *options)
+t_file	**sfiles(char **av, int begin, int size, t_file **dir, t_opts *options)
 {
 	int i;
 	int j;

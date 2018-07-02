@@ -58,7 +58,7 @@ void	illegal_option(char option)
 	ft_putchar(option);
 	ft_putchar('\n');
 	ft_putendl("usage: ./ft_ls [-lRart] [file ...]");
-	exit(-1);
+	exit(1);
 }
 
 /*

@@ -100,7 +100,7 @@ void	sort_by_time(char **av, int begin)
 		   - calls **av sorting funcs referring to options
 */
 
-void	treat_args(char **av, int begin, t_options *options)
+void	treat_args(char **av, int begin, t_opts *options)
 {
 	single_files_ls(av, begin, options);
 	if (options->t)
@@ -154,7 +154,7 @@ int	count_files(char **av, int begin)
 	treat_dirs - sends valid dirs from **av to ls
 */
 
-void	treat_dirs(char **av, int begin, t_options *options)
+void	treat_dirs(char **av, int begin, t_opts *options)
 {
 	int i;
 	int dirs;

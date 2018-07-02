@@ -6,7 +6,7 @@
 /*   By: rdurst <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/14 16:31:22 by rdurst            #+#    #+#             */
-/*   Updated: 2018/06/11 15:32:00 by rdurst           ###   ########.fr       */
+/*   Updated: 2018/07/02 11:11:58 by rdurst           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,21 +27,21 @@
 # include "../libft/libft.h"
 
 /*
-	structure for storing options
+**	structure for storing options
 */
 
 typedef struct		s_options
 {
 	int				l;
-	int				R;
+	int				rec;
 	int				a;
 	int				r;
 	int				t;
-}					t_options;
+}					t_opts;
 
 /*
-	structure for storing the width
-	of the fields in '-l'
+**	structure for storing the width
+**	of the fields in '-l'
 */
 
 typedef struct		s_padding
@@ -54,12 +54,12 @@ typedef struct		s_padding
 	int				size;
 	int				timestamp;
 	int				name;
-}					t_padding;
+}					t_pad;
 
 /*
-	structure for storing all
-	the fields of a directory
-	or a file
+**	structure for storing all
+**	the fields of a directory
+**	or a file
 */
 
 typedef struct		s_file
@@ -71,57 +71,57 @@ typedef struct		s_file
 	char			*linkpath;
 	char			*user;
 	char			*group;
-	long				size;
+	long			size;
 	long			timestamp;
 	long			ntimestamp;
 	long			blocks;
-	int			error;
+	int				error;
 }					t_file;
 
 char				*find_filetype(struct stat *file);
 char				*find_modes(struct stat *file);
-int					option_l(t_file **dir, int size, t_options *options, t_padding *pad, int files);
+int					option_l(t_file **d, int s, t_opts *o, t_pad *p, int f);
 void				option_t(t_file **dir, int size);
-void				no_padding(t_file **dir, int size, t_options *options);
-void					handle_options(t_file **dir, int size, t_options *options,  t_padding *pad, int files);
+void				no_padding(t_file **dir, int size, t_opts *options);
+void				opts(t_file **d, int size, t_opts *o, t_pad *p, int f);
 char				*valid_path(char *path);
-int					ls(char *name, t_options *options);
-t_options			*init_options(int ac, char **av);
-void				fill_options(t_options *options, char *arg);
-t_padding			*init_padding(void);
-t_padding			*fill_padding(t_padding *padding, t_file **dir, int size);
+int					ls(char *name, t_opts *options);
+t_opts				*init_opts(int ac, char **av);
+void				fill_opts(t_opts *options, char *arg);
+t_pad				*init_pad(void);
+t_pad				*fill_pad(t_pad *padding, t_file **dir, int size);
 void				print_spaces(int nb);
-int				ft_dirlen(char *name, char *path);
+int					ft_dirlen(char *name, char *path);
 t_file				**init_dir(t_file **dir, int size);
 char				*find_user(struct stat *stats);
 char				*find_group(struct stat *stats);
 char				*find_link(char *path, char *name);
-int				find_error(char *file);
+int					find_error(char *file);
 void				print_timestamp(long timestamp);
-t_file				**fill_dir(t_file **dir, int size, char *path, t_options *options);
-t_file				**fill_files(char **av, int begin, int size, t_file **dir, t_options *options);
-int				valid_arg(char *arg);
-void				print_blocks(t_file **dir, int size, t_options *options);
+t_file				**fill_dir(t_file **d, int s, char *p, t_opts *o);
+t_file				**sfiles(char **av, int b, int s, t_file **d, t_opts *o);
+int					valid_arg(char *arg);
+void				print_blocks(t_file **dir, int size, t_opts *options);
 void				sort_dir(t_file **dir, int size);
 void				reverse_dir(t_file **dir, int size);
 void				option_t(t_file **dir, int size);
-void				treat_args(char **av, int begin, t_options *options);
-void				treat_dirs(char **av, int begin, t_options *options);
-int				count_dirs(char **av, int begin);
-int				count_files(char **av, int begin);
-int				single_files_ls(char **av, int begin, t_options *options);
+void				treat_args(char **av, int begin, t_opts *options);
+void				treat_dirs(char **av, int begin, t_opts *options);
+int					count_dirs(char **av, int begin);
+int					count_files(char **av, int begin);
+int					single_files_ls(char **av, int begin, t_opts *options);
 void				sort_args(char **av, int begin);
 void				reverse_args(char **av);
 void				sort_by_time(char **av, int begin);
-void				option_R(t_file **dir, int size, t_options *options);
+void				option_rec(t_file **dir, int size, t_opts *options);
 void				free_file(t_file *dir);
 void				free_dir(t_file **dir, int size);
-int				next_dir_offset(char **av);
+int					next_dir_offset(char **av);
 long				get_timestamp(char *dir);
 void				not_permitted(char *file);
 void				perm_denied(char *file);
 void				illegal_option(char option);
 void				no_such_file(char *file);
-void				print_l(t_file *file, t_padding *pad);
+void				print_l(t_file *file, t_pad *pad);
 
 #endif
