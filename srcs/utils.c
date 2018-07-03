@@ -29,11 +29,12 @@ int		ft_dirlen(char *name, char *path)
 	path = ft_strjoin(tmp, name);
 	ft_strdel(&tmp);
 	if ((dir = opendir(path)) == NULL)
-		return (1);
+		ret = 1;
 	else
 		while ((files = readdir(dir)) != NULL)
 			ret++;
 	(void)closedir(dir);
+	ft_strdel(&path);
 	return (ret);
 }
 
@@ -67,11 +68,16 @@ void	print_blocks(t_file **dir, int size, t_opts *options)
 long	get_timestamp(char *dir)
 {
 	struct stat	*stats;
+	int		ret;
 
+	ret = 0;
 	stats = malloc(sizeof(struct stat));
 	if (lstat(dir, stats) == -1)
-		return (0);
-	return (stats->st_mtime);
+		ret = -1;
+	else
+		ret = stats->st_mtime;
+	free(stats);
+	return (ret);
 }
 
 /*

@@ -38,6 +38,7 @@ int		ls(char *name, t_opts *options)
 	padding = fill_pad(padding, dir, size);
 	opts(dir, size, options, padding, 0);
 	free_dir(dir, size);
+	free(padding);
 	return (0);
 }
 
@@ -64,6 +65,8 @@ int		single_files_ls(char **av, int begin, t_opts *options)
 		reverse_dir(dir, size);
 	padding = fill_pad(padding, dir, size);
 	opts(dir, size, options, padding, 1);
+	free_dir(dir, size);
+	free(padding);
 	return (0);
 }
 
@@ -82,8 +85,9 @@ int		main(int ac, char **av)
 	while (av[counter] && av[counter][0] == '-')
 		counter++;
 	if ((ac - counter) == 0)
-		return (ls("./", options));
+		ls("./", options);
 	if ((ac - counter) > 0)
 		treat_args(av, counter, options);
+	free(options);
 	exit(1);
 }

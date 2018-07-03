@@ -84,7 +84,7 @@ int		option_l(t_file **dir, int size, t_opts *opts, t_pad *pad, int files)
 		return (1);
 	if (size > 1 && files == 0)
 		print_blocks(dir, size, opts);
-	while (++i < filesize)
+	while (++i < size)
 	{
 		if (!(opts->a == 0 && dir[i]->name[0] == '.'))
 			if (dir[i]->error != 1337)
@@ -123,11 +123,13 @@ void	option_rec(t_file **dir, int size, t_opts *options)
 {
 	int		i;
 	char	*path;
+	char	*tmp;
 
 	i = -1;
 	while (++i < size)
 	{
 		path = ft_strjoin(dir[0]->path, dir[i]->name);
+		tmp = valid_path(path);
 		if (!(options->a == 0 && dir[i]->name[0] == '.'))
 		{
 			if (ft_strcmp(dir[i]->name, "./") > 0 && dir[i]->perms[0] == 'd')
@@ -137,12 +139,13 @@ void	option_rec(t_file **dir, int size, t_opts *options)
 				ft_putstr(dir[i]->name);
 				ft_putstr(":\n");
 				if (dir[i]->error != EACCES)
-					ls(valid_path(path), options);
+					ls(tmp, options);
 				else
 					perm_denied(dir[i]->name);
 			}
 		}
 		ft_strdel(&path);
+		ft_strdel(&tmp);
 	}
 }
 

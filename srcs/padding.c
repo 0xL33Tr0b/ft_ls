@@ -33,11 +33,11 @@ t_pad	*init_pad(void)
 }
 
 /*
-**	fill_padding - fills t_pad * with max width of each
+**	fill_pad - fills t_pad * with max width of each
 **	field of a t_file **
 */
 
-t_pad	*fill_padding(t_pad *padding, t_file **dir, int filesize)
+t_pad	*fill_pad(t_pad *padding, t_file **dir, int filesize)
 {
 	int i;
 	int links;

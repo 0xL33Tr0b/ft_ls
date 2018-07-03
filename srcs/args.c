@@ -171,6 +171,7 @@ void	treat_dirs(char **av, int begin, t_opts *options)
 	int i;
 	int dirs;
 	int files;
+	char *path;
 
 	i = begin;
 	files = count_files(av, begin);
@@ -179,6 +180,7 @@ void	treat_dirs(char **av, int begin, t_opts *options)
 		ft_putchar('\n');
 	while (av[i])
 	{
+		path = valid_path(av[i]);
 		if (valid_arg(av[i]) == 2)
 		{
 			if (dirs > 1 || files > 0)
@@ -186,7 +188,7 @@ void	treat_dirs(char **av, int begin, t_opts *options)
 				ft_putstr(av[i]);
 				ft_putendl(":");
 			}
-			ls(valid_path(av[i]), options);
+			ls(path, options);
 			if (valid_arg(av[i + 1]) == 2)
 				ft_putchar('\n');
 		}

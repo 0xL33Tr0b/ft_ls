@@ -107,12 +107,13 @@ char	*find_link(char *path, char *file)
 	char *buf;
 	char *tmp;
 
-	buf = (char *)malloc(sizeof(char) * 1024);
-	buf[1023] = '\0';
 	tmp = ft_strdup(path);
 	path = ft_strjoin(tmp, file);
+	buf = NULL;
 	if (readlink(path, buf, 1024) == -1)
-		return (NULL);
+		buf = NULL;
+	ft_strdel(&tmp);
+	ft_strdel(&path);
 	return (buf);
 }
 
