@@ -5,47 +5,12 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: rdurst <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/07/02 13:29:16 by rdurst            #+#    #+#             */
-/*   Updated: 2018/07/02 13:34:48 by rdurst           ###   ########.fr       */
+/*   Created: 2018/07/03 20:28:10 by rdurst            #+#    #+#             */
+/*   Updated: 2018/07/03 20:47:49 by rdurst           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
-
-/*
-**	free_file - freeing a t_file *
-*/
-
-void	free_file(t_file *dir)
-{
-	if (dir != NULL)
-	{
-		ft_strdel(&dir->name);
-		ft_strdel(&dir->path);
-		ft_strdel(&dir->perms);
-		ft_strdel(&dir->user);
-		ft_strdel(&dir->group);
-		ft_strdel(&dir->linkpath);
-		free(dir);
-	}
-}
-
-/*
-**	free_dir - freeing a whole t_file **
-*/
-
-void	free_dir(t_file **dir, int size)
-{
-	int i;
-
-	i = 0;
-	if (dir != NULL)
-	{
-		while (i < size)
-			free_file(dir[i++]);
-		free(dir);
-	}
-}
 
 /*
 **	init_dir - mallocing a t_file **
@@ -85,12 +50,12 @@ t_file	**init_dir(t_file **dir, int size)
 **		and the stats.c functions
 */
 
-t_file	*fill_stats(t_file *dir, char *name, char *path, st *stats, t_opts *opts)
+t_file	*fill_stats(t_file *dir, char *name, char *path, t_stats *stats, t_opts *opts)
 {
 	if (opts->l && dir->error == EPERM)
 		not_permitted(name);
 	dir->name = ft_strdup(name);
-	dir->path = ft_strdup(path);
+	dir->path = path;
 	dir->perms = find_modes(stats);
 	dir->links = stats->st_nlink;
 	dir->linkpath = find_link(path, dir->name);
@@ -150,12 +115,11 @@ t_file	**sfiles(char **av, int begin, int size, t_file **dir, t_opts *options)
 	int			i;
 	int			j;
 	struct stat	*stats;
-	char		*path;
 
 	i = begin;
 	j = 0;
 	stats = NULL;
-	path = ft_strdup("");
+	dir[0]->path = ft_strdup("");
 	while (j < size)
 	{
 		if (valid_arg(av[i]) == 1)
@@ -169,12 +133,11 @@ t_file	**sfiles(char **av, int begin, int size, t_file **dir, t_opts *options)
 				perm_denied(av[i]);
 				dir[j]->error = 1337;
 			}
-			dir[j] = fill_stats(dir[j], av[i], path, stats, options);
+			dir[j] = fill_stats(dir[j], av[i], dir[0]->path, stats, options);
 			j++;
 			free(stats);
 		}
 		i++;
 	}
-	ft_strdel(&path);
 	return (dir);
 }

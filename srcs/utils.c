@@ -6,7 +6,7 @@
 /*   By: rdurst <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/02 13:38:12 by rdurst            #+#    #+#             */
-/*   Updated: 2018/07/02 13:39:20 by rdurst           ###   ########.fr       */
+/*   Updated: 2018/07/03 20:38:17 by rdurst           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ void	print_blocks(t_file **dir, int size, t_opts *options)
 long	get_timestamp(char *dir)
 {
 	struct stat	*stats;
-	int		ret;
+	int			ret;
 
 	ret = 0;
 	stats = malloc(sizeof(struct stat));

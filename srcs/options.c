@@ -6,7 +6,7 @@
 /*   By: rdurst <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/02 13:19:43 by rdurst            #+#    #+#             */
-/*   Updated: 2018/07/02 13:33:10 by rdurst           ###   ########.fr       */
+/*   Updated: 2018/07/03 20:59:20 by rdurst           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,10 +96,10 @@ int		option_l(t_file **dir, int size, t_opts *opts, t_pad *pad, int files)
 }
 
 /*
-**	no_padding - prints a t_file ** without options
+**	no_opts - prints a t_file ** without options
 */
 
-void	no_padding(t_file **dir, int size, t_opts *options)
+void	no_opts(t_file **dir, int size, t_opts *options)
 {
 	int i;
 
@@ -147,16 +147,4 @@ void	option_rec(t_file **dir, int size, t_opts *options)
 		ft_strdel(&path);
 		ft_strdel(&tmp);
 	}
-}
-
-/*
-**	opts - calls -l or not
-*/
-
-void	opts(t_file **dir, int size, t_opts *options, t_pad *pad, int files)
-{
-	if (options->l == 1)
-		option_l(dir, size, options, pad, files);
-	else
-		no_padding(dir, size, options);
 }

@@ -6,7 +6,7 @@
 /*   By: rdurst <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/02 12:40:29 by rdurst            #+#    #+#             */
-/*   Updated: 2018/07/02 13:19:22 by rdurst           ###   ########.fr       */
+/*   Updated: 2018/07/03 20:46:43 by rdurst           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,19 +115,4 @@ char	*find_link(char *path, char *file)
 	ft_strdel(&tmp);
 	ft_strdel(&path);
 	return (buf);
-}
-
-/*
-**	print_timestamp - printing timestamp from a file
-**	in case of -l
-*/
-
-void	print_timestamp(long timestamp)
-{
-	char *ret;
-
-	if ((ret = ctime(&timestamp)) == NULL)
-		return ;
-	ret[16] = '\0';
-	ft_putstr(ret + 4);
 }

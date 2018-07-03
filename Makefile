@@ -6,7 +6,7 @@
 #    By: rdurst <marvin@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/05/14 16:16:42 by rdurst            #+#    #+#              #
-#    Updated: 2018/06/11 18:15:05 by rdurst           ###   ########.fr        #
+#    Updated: 2018/07/03 20:49:19 by rdurst           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,6 +24,8 @@ SRCS= ./srcs/main.c\
 	./srcs/sort.c\
 	./srcs/stats.c\
 	./srcs/print.c\
+	./srcs/count.c\
+	./srcs/free.c\
 
 OPTIONS= -Wall -Wextra -Werror
 DEBUGFLAG= -g3

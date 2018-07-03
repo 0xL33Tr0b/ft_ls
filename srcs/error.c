@@ -6,7 +6,7 @@
 /*   By: rdurst <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/02 12:48:11 by rdurst            #+#    #+#             */
-/*   Updated: 2018/07/02 13:16:31 by rdurst           ###   ########.fr       */
+/*   Updated: 2018/07/03 20:14:08 by rdurst           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,18 +23,23 @@ int		valid_arg(char *arg)
 {
 	DIR			*dir;
 	struct stat	*stats;
+	int			ret;
 
 	stats = NULL;
+	ret = 0;
 	if ((dir = opendir(arg)) != NULL)
 	{
 		(void)closedir(dir);
 		return (2);
 	}
-	stats = malloc(sizeof(struct stat));
+	if ((stats = (struct stat *)malloc(sizeof(struct stat))) == NULL)
+		ret = 0;
 	if (lstat(arg, stats) == -1)
-		return (0);
+		ret = 0;
+	else
+		ret = 1;
 	free(stats);
-	return (1);
+	return (ret);
 }
 
 /*

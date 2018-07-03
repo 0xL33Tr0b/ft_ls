@@ -6,7 +6,7 @@
 /*   By: rdurst <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/17 16:22:49 by rdurst            #+#    #+#             */
-/*   Updated: 2018/07/02 13:28:03 by rdurst           ###   ########.fr       */
+/*   Updated: 2018/07/03 20:57:33 by rdurst           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,28 +54,23 @@ t_pad	*fill_pad(t_pad *padding, t_file **dir, int filesize)
 		user = ft_strlen(dir[i]->user);
 		group = ft_strlen(dir[i]->group);
 		size = ft_nbrlen(dir[i]->size);
-		if (links > padding->links)
-			padding->links = links;
-		if (user > padding->user)
-			padding->user = user;
-		if (group > padding->group)
-			padding->group = group;
-		if (size > padding->size)
-			padding->size = size;
+		padding->links = replace_if(links, padding->links);
+		padding->user = replace_if(user, padding->user);
+		padding->group = replace_if(group, padding->group);
+		padding->size = replace_if(size, padding->size);
 		i++;
 	}
 	return (padding);
 }
 
 /*
-**	print_spaces - prints 'nb' spaces
+**	replace_if - returns value1 if its higher
 */
 
-void	print_spaces(int nb)
+int		replace_if(int value1, int value2)
 {
-	int i;
-
-	i = -1;
-	while (++i <= nb)
-		ft_putchar(' ');
+	if (value1 > value2)
+		return (value1);
+	else
+		return (value2);
 }

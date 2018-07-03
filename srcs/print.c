@@ -6,7 +6,7 @@
 /*   By: rdurst <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/02 13:19:34 by rdurst            #+#    #+#             */
-/*   Updated: 2018/07/02 13:39:45 by rdurst           ###   ########.fr       */
+/*   Updated: 2018/07/03 20:54:34 by rdurst           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,4 +37,42 @@ void	print_l(t_file *dir, t_pad *pad)
 		ft_putstr(dir->linkpath);
 	}
 	ft_putchar('\n');
+}
+
+/*
+**	two_points - prints "file:"
+*/
+
+void	two_points(char *file)
+{
+	ft_putstr(file);
+	ft_putstr(":");
+}
+
+/*
+**	print_timestamp - printing timestamp from a file
+**	in case of -l
+*/
+
+void	print_timestamp(long timestamp)
+{
+	char *ret;
+
+	if ((ret = ctime(&timestamp)) == NULL)
+		return ;
+	ret[16] = '\0';
+	ft_putstr(ret + 4);
+}
+
+/*
+**	print_spaces - prints 'nb' spaces
+*/
+
+void	print_spaces(int nb)
+{
+	int i;
+
+	i = -1;
+	while (++i <= nb)
+		ft_putchar(' ');
 }

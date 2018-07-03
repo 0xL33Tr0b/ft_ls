@@ -6,7 +6,7 @@
 /*   By: rdurst <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/14 16:31:22 by rdurst            #+#    #+#             */
-/*   Updated: 2018/07/02 13:31:56 by rdurst           ###   ########.fr       */
+/*   Updated: 2018/07/03 20:57:59 by rdurst           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,13 +78,13 @@ typedef struct		s_file
 	int				error;
 }					t_file;
 
-typedef struct stat st;
+typedef struct stat	t_stats;
 
 char				*find_filetype(struct stat *file);
 char				*find_modes(struct stat *file);
 int					option_l(t_file **d, int s, t_opts *o, t_pad *p, int f);
 void				option_t(t_file **dir, int size);
-void				no_padding(t_file **dir, int size, t_opts *options);
+void				no_opts(t_file **dir, int size, t_opts *options);
 void				opts(t_file **d, int size, t_opts *o, t_pad *p, int f);
 char				*valid_path(char *path);
 int					ls(char *name, t_opts *options);
@@ -125,5 +125,7 @@ void				perm_denied(char *file);
 void				illegal_option(char option);
 void				no_such_file(char *file);
 void				print_l(t_file *file, t_pad *pad);
+void				two_points(char *file);
+int					replace_if(int value1, int value2);
 
 #endif

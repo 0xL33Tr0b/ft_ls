@@ -6,7 +6,7 @@
 /*   By: rdurst <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/17 16:13:57 by rdurst            #+#    #+#             */
-/*   Updated: 2018/07/02 13:19:07 by rdurst           ###   ########.fr       */
+/*   Updated: 2018/07/03 21:00:25 by rdurst           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,18 @@ int		single_files_ls(char **av, int begin, t_opts *options)
 	free_dir(dir, size);
 	free(padding);
 	return (0);
+}
+
+/*
+**	opts - calls -l or not
+*/
+
+void	opts(t_file **dir, int size, t_opts *options, t_pad *pad, int files)
+{
+	if (options->l == 1)
+		option_l(dir, size, options, pad, files);
+	else
+		no_opts(dir, size, options);
 }
 
 /*

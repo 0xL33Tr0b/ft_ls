@@ -6,28 +6,11 @@
 /*   By: rdurst <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/02 13:35:13 by rdurst            #+#    #+#             */
-/*   Updated: 2018/07/02 13:37:54 by rdurst           ###   ########.fr       */
+/*   Updated: 2018/07/03 20:37:05 by rdurst           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
-
-/*
-**	count_args - returns the number of args after
-**		the options
-*/
-
-int		count_args(char **av, int begin)
-{
-	int i;
-	int ret;
-
-	i = begin;
-	ret = 0;
-	while (av[i++])
-		ret++;
-	return (ret);
-}
 
 /*
 **	sort_args - sorting char **av by ASCII order
@@ -123,55 +106,15 @@ void	treat_args(char **av, int begin, t_opts *options)
 }
 
 /*
-**	count_dirs - counts valid dirs in **av
-*/
-
-int		count_dirs(char **av, int begin)
-{
-	int dirs;
-	int i;
-
-	dirs = 0;
-	i = begin;
-	while (av[i])
-	{
-		if (valid_arg(av[i]) == 2)
-			dirs++;
-		i++;
-	}
-	return (dirs);
-}
-
-/*
-**	count_files - counts valid files in **av
-*/
-
-int		count_files(char **av, int begin)
-{
-	int files;
-	int i;
-
-	files = 0;
-	i = begin;
-	while (av[i])
-	{
-		if (valid_arg(av[i]) == 1)
-			files++;
-		i++;
-	}
-	return (files);
-}
-
-/*
 **	treat_dirs - sends valid dirs from **av to ls
 */
 
 void	treat_dirs(char **av, int begin, t_opts *options)
 {
-	int i;
-	int dirs;
-	int files;
-	char *path;
+	int		i;
+	int		dirs;
+	int		files;
+	char	*path;
 
 	i = begin;
 	files = count_files(av, begin);
@@ -184,14 +127,12 @@ void	treat_dirs(char **av, int begin, t_opts *options)
 		if (valid_arg(av[i]) == 2)
 		{
 			if (dirs > 1 || files > 0)
-			{
-				ft_putstr(av[i]);
-				ft_putendl(":");
-			}
+				two_points(av[i]);
 			ls(path, options);
 			if (valid_arg(av[i + 1]) == 2)
 				ft_putchar('\n');
 		}
+		ft_strdel(&path);
 		i++;
 	}
 }
