@@ -6,7 +6,7 @@
 /*   By: rdurst <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/02 12:48:11 by rdurst            #+#    #+#             */
-/*   Updated: 2018/07/04 04:10:26 by rdurst           ###   ########.fr       */
+/*   Updated: 2018/07/05 00:28:50 by rdurst           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,9 +50,9 @@ void	perm_denied(char *file, t_info info)
 {
 	if (info.size > 1)
 		ft_putchar('\n');
-	ft_putstr("ls: ");
-	ft_putstr(file);
-	ft_putstr(": Permission denied\n");
+	ft_putstr_fd("./ft_ls: ", STDERR_FILENO);
+	ft_putstr_fd(file, STDERR_FILENO);
+	ft_putstr_fd(": Permission denied\n", STDERR_FILENO);
 }
 
 /*
@@ -61,9 +61,9 @@ void	perm_denied(char *file, t_info info)
 
 void	not_permitted(char *file)
 {
-	ft_putstr("ls: ");
-	ft_putstr(file);
-	ft_putendl(": Operation not permitted");
+	ft_putstr_fd("./ft_ls: ", STDERR_FILENO);
+	ft_putstr_fd(file, STDERR_FILENO);
+	ft_putstr_fd(": Operation not permitted\n", STDERR_FILENO);
 }
 
 /*
@@ -73,10 +73,9 @@ void	not_permitted(char *file)
 
 void	illegal_option(char option)
 {
-	ft_putstr("ls: illegal option -- ");
-	ft_putchar(option);
-	ft_putstr("\nusage: ls [-ABCFGHLOPRSTUWabc");
-	ft_putstr("defghiklmnopqrstuwx1] [file ...]\n");
+	ft_putstr_fd("./ft_ls: illegal option -- ", STDERR_FILENO);
+	ft_putchar_fd(option, STDERR_FILENO);
+	ft_putstr_fd("\nusage: ./ft_ls [-lartR] [file ...]\n", STDERR_FILENO);
 	exit(1);
 }
 
@@ -86,7 +85,7 @@ void	illegal_option(char option)
 
 void	no_such_file(char *file)
 {
-	ft_putstr("ls: ");
-	ft_putstr(file);
-	ft_putstr(": No such file or directory\n");
+	ft_putstr_fd("ls: ", STDERR_FILENO);
+	ft_putstr_fd(file, STDERR_FILENO);
+	ft_putstr_fd(": No such file or directory\n", STDERR_FILENO);
 }

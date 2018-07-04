@@ -6,7 +6,7 @@
 /*   By: rdurst <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/17 16:13:57 by rdurst            #+#    #+#             */
-/*   Updated: 2018/07/04 03:55:14 by rdurst           ###   ########.fr       */
+/*   Updated: 2018/07/05 00:45:18 by rdurst           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,5 +106,5 @@ int		main(int ac, char **av)
 	if ((ac - counter) > 0)
 		treat_args(&av[counter], options);
 	free(options);
-	exit(1);
+	exit(0);
 }

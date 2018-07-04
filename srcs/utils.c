@@ -6,7 +6,7 @@
 /*   By: rdurst <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/02 13:38:12 by rdurst            #+#    #+#             */
-/*   Updated: 2018/07/04 01:49:15 by rdurst           ###   ########.fr       */
+/*   Updated: 2018/07/05 00:55:25 by rdurst           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,6 +112,8 @@ char	*valid_path(char *path)
 	i = 0;
 	if (!path)
 		return (NULL);
+	if (ft_strcmp(path, ".") == 0)
+		return (ft_strdup("./"));
 	while (path[i])
 		i++;
 	if (i == 1 || path[i] == '/')

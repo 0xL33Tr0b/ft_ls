@@ -6,7 +6,7 @@
 /*   By: rdurst <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/02 12:40:29 by rdurst            #+#    #+#             */
-/*   Updated: 2018/07/04 05:36:10 by rdurst           ###   ########.fr       */
+/*   Updated: 2018/07/04 22:36:13 by rdurst           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@ char	*find_modes(struct stat *file)
 {
 	char *ret;
 
-	ret = NULL;
 	ret = ft_strnew(10);
 	if (S_ISLNK(file->st_mode))
 		ret[0] = 'l';
@@ -38,9 +37,12 @@ char	*find_modes(struct stat *file)
 	ret[7] = (file->st_mode & S_IROTH ? 'r' : '-');
 	ret[8] = (file->st_mode & S_IWOTH ? 'w' : '-');
 	ret[9] = (file->st_mode & S_IXOTH ? 'x' : '-');
-	ret[3] = (file->st_mode & S_ISUID ? 'S' : ret[3]);
-	ret[6] = (file->st_mode & S_ISGID ? 'S' : ret[6]);
-	ret[9] = (file->st_mode & S_ISVTX ? 'T' : ret[9]);
+	if (file->st_mode & S_ISUID)
+		ret[3] = ret[3] == '-' ? 'S' : 's';
+	if (file->st_mode & S_ISGID)
+		ret[6] = ret[6] == '-' ? 'S' : 's';
+	if (file->st_mode & S_ISVTX)
+		ret[9] = ret[9] == '-' ? 'T' : 't';
 	return (ret);
 }
 

@@ -6,7 +6,7 @@
 /*   By: rdurst <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/02 13:19:43 by rdurst            #+#    #+#             */
-/*   Updated: 2018/07/04 04:13:49 by rdurst           ###   ########.fr       */
+/*   Updated: 2018/07/04 23:14:33 by rdurst           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ int		option_l(t_file **dir, t_info info, t_opts *opts, t_pad *pad)
 	i = -1;
 	if (dir == NULL)
 		return (1);
-	if (info.size > 1 && info.type != 1)
+	if (info.size > 2 && info.type != 1)
 		print_blocks(dir, info.size, opts);
 	while (++i < info.size)
 	{
