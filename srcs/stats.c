@@ -6,7 +6,7 @@
 /*   By: rdurst <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/02 12:40:29 by rdurst            #+#    #+#             */
-/*   Updated: 2018/07/03 20:46:43 by rdurst           ###   ########.fr       */
+/*   Updated: 2018/07/04 05:36:10 by rdurst           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,12 @@ char	*find_modes(struct stat *file)
 {
 	char *ret;
 
+	ret = NULL;
 	ret = ft_strnew(10);
 	if (S_ISLNK(file->st_mode))
 		ret[0] = 'l';
+	else if ((file->st_mode & S_IFSOCK) == S_IFSOCK)
+		ret[0] = 's';
 	else
 		ret[0] = S_ISDIR(file->st_mode) ? 'd' : '-';
 	ret[1] = (file->st_mode & S_IRUSR ? 'r' : '-');
@@ -35,6 +38,9 @@ char	*find_modes(struct stat *file)
 	ret[7] = (file->st_mode & S_IROTH ? 'r' : '-');
 	ret[8] = (file->st_mode & S_IWOTH ? 'w' : '-');
 	ret[9] = (file->st_mode & S_IXOTH ? 'x' : '-');
+	ret[3] = (file->st_mode & S_ISUID ? 'S' : ret[3]);
+	ret[6] = (file->st_mode & S_ISGID ? 'S' : ret[6]);
+	ret[9] = (file->st_mode & S_ISVTX ? 'T' : ret[9]);
 	return (ret);
 }
 
@@ -69,12 +75,11 @@ char	*find_user(struct stat *stats)
 	struct passwd	*usr;
 	char			*ret;
 
+	ret = NULL;
 	if ((usr = getpwuid(stats->st_uid)) == NULL)
 		ret = ft_itoa(stats->st_uid);
 	else
 		ret = ft_strdup(usr->pw_name);
-	if (ret == NULL)
-		return (NULL);
 	return (ret);
 }
 
@@ -88,12 +93,11 @@ char	*find_group(struct stat *stats)
 	struct group	*grp;
 	char			*ret;
 
+	ret = NULL;
 	if ((grp = getgrgid(stats->st_gid)) == NULL)
 		ret = ft_itoa(stats->st_gid);
 	else
 		ret = ft_strdup(grp->gr_name);
-	if (ret == NULL)
-		return (NULL);
 	return (ret);
 }
 
@@ -104,14 +108,15 @@ char	*find_group(struct stat *stats)
 
 char	*find_link(char *path, char *file)
 {
-	char *buf;
-	char *tmp;
+	char	*buf;
+	char	*tmp;
 
 	tmp = ft_strdup(path);
 	path = ft_strjoin(tmp, file);
-	buf = NULL;
-	if (readlink(path, buf, 1024) == -1)
-		buf = NULL;
+	if ((buf = ft_strnew(1024)) == NULL)
+		return (NULL);
+	if (readlink(path, buf, 256) == -1)
+		ft_strdel(&buf);
 	ft_strdel(&tmp);
 	ft_strdel(&path);
 	return (buf);

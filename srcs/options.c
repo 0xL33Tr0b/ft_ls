@@ -6,7 +6,7 @@
 /*   By: rdurst <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/02 13:19:43 by rdurst            #+#    #+#             */
-/*   Updated: 2018/07/03 20:59:20 by rdurst           ###   ########.fr       */
+/*   Updated: 2018/07/04 04:13:49 by rdurst           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,24 +45,24 @@ void	fill_options(t_opts *options, char *arg)
 **	init_opts - mallocing a t_opts *
 */
 
-t_opts	*init_opts(int ac, char **av)
+t_opts	*init_opts(char **av)
 {
 	int		i;
 	int		tmp;
 	t_opts	*options;
 
-	i = 1;
+	i = 0;
 	options = (t_opts *)malloc(sizeof(t_opts));
 	options->l = 0;
 	options->rec = 0;
 	options->a = 0;
 	options->r = 0;
 	options->t = 0;
-	while (i < ac && av[i][0] == '-')
+	while (av[i] && av[i][0] == '-')
 		fill_options(options, av[i++]);
-	sort_args(av, i);
+	sort_args(av);
 	tmp = i;
-	while (i < ac)
+	while (av[i])
 	{
 		if (valid_arg(av[i]) == 0)
 			no_such_file(av[i]);
@@ -75,23 +75,23 @@ t_opts	*init_opts(int ac, char **av)
 **	option_l - printing a t_file ** with -l
 */
 
-int		option_l(t_file **dir, int size, t_opts *opts, t_pad *pad, int files)
+int		option_l(t_file **dir, t_info info, t_opts *opts, t_pad *pad)
 {
 	int i;
 
 	i = -1;
 	if (dir == NULL)
 		return (1);
-	if (size > 1 && files == 0)
-		print_blocks(dir, size, opts);
-	while (++i < size)
+	if (info.size > 1 && info.type != 1)
+		print_blocks(dir, info.size, opts);
+	while (++i < info.size)
 	{
 		if (!(opts->a == 0 && dir[i]->name[0] == '.'))
 			if (dir[i]->error != 1337)
-				print_l(dir[i], pad);
+				print_l(dir[i], info, pad);
 	}
 	if (opts->rec)
-		option_rec(dir, size, opts);
+		option_rec(dir, info, opts);
 	return (0);
 }
 
@@ -99,19 +99,23 @@ int		option_l(t_file **dir, int size, t_opts *opts, t_pad *pad, int files)
 **	no_opts - prints a t_file ** without options
 */
 
-void	no_opts(t_file **dir, int size, t_opts *options)
+void	no_opts(t_file **dir, t_info info, t_opts *options)
 {
 	int i;
 
 	i = -1;
 	if (dir == NULL)
 		return ;
-	while (++i < size)
+	while (++i < info.size)
 		if (!(options->a == 0 && dir[i]->name[0] == '.'))
-			if (dir[i]->error != 1337)
+		{
+			if (dir[i]->error == EACCES && info.type == 1)
+				perm_denied(dir[i]->name, info);
+			else
 				ft_putendl(dir[i]->name);
+		}
 	if (options->rec)
-		option_rec(dir, size, options);
+		option_rec(dir, info, options);
 }
 
 /*
@@ -119,14 +123,14 @@ void	no_opts(t_file **dir, int size, t_opts *options)
 **		directories recursively
 */
 
-void	option_rec(t_file **dir, int size, t_opts *options)
+void	option_rec(t_file **dir, t_info info, t_opts *options)
 {
 	int		i;
 	char	*path;
 	char	*tmp;
 
 	i = -1;
-	while (++i < size)
+	while (++i < info.size)
 	{
 		path = ft_strjoin(dir[0]->path, dir[i]->name);
 		tmp = valid_path(path);
@@ -135,13 +139,12 @@ void	option_rec(t_file **dir, int size, t_opts *options)
 			if (ft_strcmp(dir[i]->name, "./") > 0 && dir[i]->perms[0] == 'd')
 			{
 				ft_putchar('\n');
-				ft_putstr(dir[0]->path);
-				ft_putstr(dir[i]->name);
+				ft_putstr(path);
 				ft_putstr(":\n");
 				if (dir[i]->error != EACCES)
 					ls(tmp, options);
 				else
-					perm_denied(dir[i]->name);
+					perm_denied(dir[i]->name, info);
 			}
 		}
 		ft_strdel(&path);

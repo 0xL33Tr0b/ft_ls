@@ -6,7 +6,7 @@
 /*   By: rdurst <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/02 13:19:34 by rdurst            #+#    #+#             */
-/*   Updated: 2018/07/03 20:54:34 by rdurst           ###   ########.fr       */
+/*   Updated: 2018/07/04 04:12:58 by rdurst           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,27 +16,32 @@
 **	print_l - prints one line/file from t_file * (-l)
 */
 
-void	print_l(t_file *dir, t_pad *pad)
+void	print_l(t_file *dir, t_info info, t_pad *pad)
 {
-	ft_putstr(dir->perms);
-	print_spaces(pad->links - ft_nbrlen(dir->links) + 1);
-	ft_putnbr(dir->links);
-	print_spaces(pad->user - ft_strlen(dir->user));
-	ft_putstr(dir->user);
-	print_spaces(pad->group - ft_strlen(dir->group) + 1);
-	ft_putstr(dir->group);
-	print_spaces(pad->size - ft_nbrlen(dir->size) + 1);
-	ft_putnbr(dir->size);
-	print_spaces(0);
-	print_timestamp(dir->timestamp);
-	print_spaces(0);
-	ft_putstr(dir->name);
-	if (dir->linkpath != NULL)
+	if (dir->error == EACCES && info.type == 1)
+		perm_denied(dir->name, info);
+	else
 	{
-		ft_putstr(" -> ");
-		ft_putstr(dir->linkpath);
+		ft_putstr(dir->perms);
+		print_spaces(pad->links - ft_nbrlen(dir->links) + 1);
+		ft_putnbr(dir->links);
+		print_spaces(pad->user - ft_strlen(dir->user));
+		ft_putstr(dir->user);
+		print_spaces(pad->group - ft_strlen(dir->group) + 1);
+		ft_putstr(dir->group);
+		print_spaces(pad->size - ft_nbrlen(dir->size) + 1);
+		ft_putnbr(dir->size);
+		print_spaces(0);
+		print_timestamp(dir->timestamp);
+		print_spaces(0);
+		ft_putstr(dir->name);
+		if (dir->linkpath != NULL)
+		{
+			ft_putstr(" -> ");
+			ft_putstr(dir->linkpath);
+		}
+		ft_putchar('\n');
 	}
-	ft_putchar('\n');
 }
 
 /*
@@ -46,7 +51,7 @@ void	print_l(t_file *dir, t_pad *pad)
 void	two_points(char *file)
 {
 	ft_putstr(file);
-	ft_putstr(":");
+	ft_putstr(":\n");
 }
 
 /*

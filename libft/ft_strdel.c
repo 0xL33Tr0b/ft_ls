@@ -6,7 +6,7 @@
 /*   By: rdurst <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/10 17:58:23 by rdurst            #+#    #+#             */
-/*   Updated: 2017/11/14 21:43:36 by rdurst           ###   ########.fr       */
+/*   Updated: 2018/07/04 00:27:39 by rdurst           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ void	ft_strdel(char **as)
 {
 	if (!as || !*as)
 		return ;
+	ft_bzero(*as, ft_strlen(*as));
 	free(*as);
 	*as = NULL;
 }

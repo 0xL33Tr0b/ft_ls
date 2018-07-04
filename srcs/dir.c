@@ -6,7 +6,7 @@
 /*   By: rdurst <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/03 20:28:10 by rdurst            #+#    #+#             */
-/*   Updated: 2018/07/03 20:47:49 by rdurst           ###   ########.fr       */
+/*   Updated: 2018/07/04 03:06:21 by rdurst           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,10 +50,8 @@ t_file	**init_dir(t_file **dir, int size)
 **		and the stats.c functions
 */
 
-t_file	*fill_stats(t_file *dir, char *name, char *path, t_stats *stats, t_opts *opts)
+t_file	*fill_stats(t_file *dir, char *name, char *path, t_stats *stats)
 {
-	if (opts->l && dir->error == EPERM)
-		not_permitted(name);
 	dir->name = ft_strdup(name);
 	dir->path = path;
 	dir->perms = find_modes(stats);
@@ -65,6 +63,8 @@ t_file	*fill_stats(t_file *dir, char *name, char *path, t_stats *stats, t_opts *
 	dir->timestamp = stats->st_mtime;
 	dir->ntimestamp = stats->st_mtimespec.tv_nsec;
 	dir->blocks = stats->st_blocks;
+	dir->error = find_error(name);
+	free(stats);
 	return (dir);
 }
 
@@ -73,7 +73,7 @@ t_file	*fill_stats(t_file *dir, char *name, char *path, t_stats *stats, t_opts *
 **		for each file of the dir from ls
 */
 
-t_file	**fill_dir(t_file **dir, int size, char *path, t_opts *options)
+t_file	**fill_dir(t_file **dir, t_info info, char *path)
 {
 	int				i;
 	struct dirent	*file;
@@ -85,20 +85,15 @@ t_file	**fill_dir(t_file **dir, int size, char *path, t_opts *options)
 	if ((dirpointer = opendir(path)) == NULL)
 		return (dir);
 	dir[0]->path = ft_strdup(path);
-	while (i < size)
+	while (i < info.size && (file = readdir(dirpointer)) != NULL)
 	{
-		if ((file = readdir(dirpointer)) != NULL)
+		tmp = ft_strjoin(path, file->d_name);
+		if ((stats = (struct stat *)malloc(sizeof(struct stat))) != NULL)
 		{
-			tmp = ft_strjoin(path, file->d_name);
-			if ((stats = (struct stat *)malloc(sizeof(struct stat))) != NULL)
-			{
-				lstat(tmp, stats);
-				dir[i]->error = find_error(file->d_name);
-				dir[i] = fill_stats(dir[i], file->d_name, dir[0]->path, stats, options);
-				free(stats);
-			}
-			ft_strdel(&tmp);
+			lstat(tmp, stats);
+			dir[i] = fill_stats(dir[i], file->d_name, dir[0]->path, stats);
 		}
+		ft_strdel(&tmp);
 		i++;
 	}
 	(void)closedir(dirpointer);
@@ -110,32 +105,25 @@ t_file	**fill_dir(t_file **dir, int size, char *path, t_opts *options)
 **		from single_file_ls
 */
 
-t_file	**sfiles(char **av, int begin, int size, t_file **dir, t_opts *options)
+t_file	**sfiles(char **av, t_info info, t_file **dir)
 {
 	int			i;
 	int			j;
 	struct stat	*stats;
 
-	i = begin;
+	i = 0;
 	j = 0;
 	stats = NULL;
 	dir[0]->path = ft_strdup("");
-	while (j < size)
+	while (j < info.size)
 	{
 		if (valid_arg(av[i]) == 1)
 		{
 			if ((stats = (struct stat *)malloc(sizeof(struct stat))) == NULL)
 				return (dir);
 			lstat(av[i], stats);
-			dir[j]->error = find_error(av[i]);
-			if (dir[j]->error == EACCES)
-			{
-				perm_denied(av[i]);
-				dir[j]->error = 1337;
-			}
-			dir[j] = fill_stats(dir[j], av[i], dir[0]->path, stats, options);
+			dir[j] = fill_stats(dir[j], av[i], dir[0]->path, stats);
 			j++;
-			free(stats);
 		}
 		i++;
 	}

@@ -6,7 +6,7 @@
 /*   By: rdurst <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/02 13:35:13 by rdurst            #+#    #+#             */
-/*   Updated: 2018/07/03 20:37:05 by rdurst           ###   ########.fr       */
+/*   Updated: 2018/07/04 03:27:31 by rdurst           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,23 +16,24 @@
 **	sort_args - sorting char **av by ASCII order
 */
 
-void	sort_args(char **av, int begin)
+void	sort_args(char **av)
 {
 	char	*tmp;
 	int		i;
 
-	i = begin;
-	while (av[begin])
+	i = 0;
+	while (av[i])
 	{
-		if (av[begin + 1])
-			if (ft_strcmp(av[begin], av[begin + 1]) > 0)
+		if (av[i + 1])
+			if (ft_strcmp(av[i], av[i + 1]) > 0)
 			{
-				tmp = av[begin];
-				av[begin] = av[begin + 1];
-				av[begin + 1] = tmp;
-				begin = i;
+				tmp = av[i];
+				av[i] = av[i + 1];
+				av[i + 1] = tmp;
+				if (i > 0)
+					i -= 1;
 			}
-		begin++;
+		i++;
 	}
 	return ;
 }
@@ -68,13 +69,13 @@ void	reverse_args(char **av)
 **		by time of last modification
 */
 
-void	sort_by_time(char **av, int begin)
+void	sort_by_time(char **av)
 {
 	int		i;
 	int		nextdir;
 	char	*tmp;
 
-	i = begin;
+	i = 0;
 	nextdir = 0;
 	while (av[i])
 	{
@@ -84,7 +85,8 @@ void	sort_by_time(char **av, int begin)
 				tmp = av[i];
 				av[i] = av[i + nextdir];
 				av[i + nextdir] = tmp;
-				i = begin;
+				if (i > 0)
+					i -= 1;
 			}
 		i++;
 	}
@@ -95,30 +97,30 @@ void	sort_by_time(char **av, int begin)
 **		   - calls **av sorting funcs referring to options
 */
 
-void	treat_args(char **av, int begin, t_opts *options)
+void	treat_args(char **av, t_opts *options)
 {
-	single_files_ls(av, begin, options);
+	single_files_ls(av, options);
 	if (options->t)
-		sort_by_time(av, begin);
+		sort_by_time(av);
 	if (options->r)
-		reverse_args(&av[begin]);
-	treat_dirs(av, begin, options);
+		reverse_args(av);
+	treat_dirs(av, options);
 }
 
 /*
 **	treat_dirs - sends valid dirs from **av to ls
 */
 
-void	treat_dirs(char **av, int begin, t_opts *options)
+void	treat_dirs(char **av, t_opts *options)
 {
 	int		i;
 	int		dirs;
 	int		files;
 	char	*path;
 
-	i = begin;
-	files = count_files(av, begin);
-	dirs = count_dirs(av, begin);
+	i = 0;
+	files = count_files(av);
+	dirs = count_dirs(av);
 	if (files > 0 && dirs > 0)
 		ft_putchar('\n');
 	while (av[i])
@@ -132,7 +134,6 @@ void	treat_dirs(char **av, int begin, t_opts *options)
 			if (valid_arg(av[i + 1]) == 2)
 				ft_putchar('\n');
 		}
-		ft_strdel(&path);
 		i++;
 	}
 }

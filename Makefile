@@ -6,13 +6,13 @@
 #    By: rdurst <marvin@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/05/14 16:16:42 by rdurst            #+#    #+#              #
-#    Updated: 2018/07/03 20:49:19 by rdurst           ###   ########.fr        #
+#    Updated: 2018/07/03 21:35:00 by rdurst           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME=ft_ls
 CC=gcc
-INCLUDES= -I ./includes
+INCLUDES= -I ./includes -I ./libft
 LIBFT= libft/libft.a
 SRCS= ./srcs/main.c\
 	./srcs/options.c\

@@ -6,7 +6,7 @@
 /*   By: rdurst <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/03 20:29:46 by rdurst            #+#    #+#             */
-/*   Updated: 2018/07/03 20:31:46 by rdurst           ###   ########.fr       */
+/*   Updated: 2018/07/04 03:16:04 by rdurst           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,13 +33,13 @@ int		count_args(char **av, int begin)
 **	count_dirs - counts valid dirs in **av
 */
 
-int		count_dirs(char **av, int begin)
+int		count_dirs(char **av)
 {
 	int dirs;
 	int i;
 
 	dirs = 0;
-	i = begin;
+	i = 0;
 	while (av[i])
 	{
 		if (valid_arg(av[i]) == 2)
@@ -53,13 +53,13 @@ int		count_dirs(char **av, int begin)
 **	count_files - counts valid files in **av
 */
 
-int		count_files(char **av, int begin)
+int		count_files(char **av)
 {
 	int files;
 	int i;
 
 	files = 0;
-	i = begin;
+	i = 0;
 	while (av[i])
 	{
 		if (valid_arg(av[i]) == 1)

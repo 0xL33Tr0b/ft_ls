@@ -6,7 +6,7 @@
 /*   By: rdurst <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/02 12:48:11 by rdurst            #+#    #+#             */
-/*   Updated: 2018/07/03 20:14:08 by rdurst           ###   ########.fr       */
+/*   Updated: 2018/07/04 04:10:26 by rdurst           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,9 +46,11 @@ int		valid_arg(char *arg)
 **	perm_denied - printing EACCES permission error
 */
 
-void	perm_denied(char *file)
+void	perm_denied(char *file, t_info info)
 {
-	ft_putstr("ft_ls: ");
+	if (info.size > 1)
+		ft_putchar('\n');
+	ft_putstr("ls: ");
 	ft_putstr(file);
 	ft_putstr(": Permission denied\n");
 }
@@ -59,7 +61,7 @@ void	perm_denied(char *file)
 
 void	not_permitted(char *file)
 {
-	ft_putstr("ft_ls: ");
+	ft_putstr("ls: ");
 	ft_putstr(file);
 	ft_putendl(": Operation not permitted");
 }
@@ -71,10 +73,10 @@ void	not_permitted(char *file)
 
 void	illegal_option(char option)
 {
-	ft_putstr("ft_ls: illegal option -- ");
+	ft_putstr("ls: illegal option -- ");
 	ft_putchar(option);
-	ft_putchar('\n');
-	ft_putendl("usage: ./ft_ls [-lRart] [file ...]");
+	ft_putstr("\nusage: ls [-ABCFGHLOPRSTUWabc");
+	ft_putstr("defghiklmnopqrstuwx1] [file ...]\n");
 	exit(1);
 }
 
@@ -84,7 +86,7 @@ void	illegal_option(char option)
 
 void	no_such_file(char *file)
 {
-	ft_putstr("ft_ls: ");
+	ft_putstr("ls: ");
 	ft_putstr(file);
 	ft_putstr(": No such file or directory\n");
 }
