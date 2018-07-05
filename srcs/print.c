@@ -6,7 +6,7 @@
 /*   By: rdurst <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/02 13:19:34 by rdurst            #+#    #+#             */
-/*   Updated: 2018/07/04 04:12:58 by rdurst           ###   ########.fr       */
+/*   Updated: 2018/07/05 01:48:02 by rdurst           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@ void	print_l(t_file *dir, t_info info, t_pad *pad)
 {
 	if (dir->error == EACCES && info.type == 1)
 		perm_denied(dir->name, info);
+	else if (dir->error == EPERM)
+		return ;
 	else
 	{
 		ft_putstr(dir->perms);
@@ -36,10 +38,7 @@ void	print_l(t_file *dir, t_info info, t_pad *pad)
 		print_spaces(0);
 		ft_putstr(dir->name);
 		if (dir->linkpath != NULL)
-		{
-			ft_putstr(" -> ");
-			ft_putstr(dir->linkpath);
-		}
+			print_link(dir->linkpath);
 		ft_putchar('\n');
 	}
 }
@@ -80,4 +79,14 @@ void	print_spaces(int nb)
 	i = -1;
 	while (++i <= nb)
 		ft_putchar(' ');
+}
+
+/*
+**	print_link - prints '-> linkpath'
+*/
+
+void	print_link(char *linkpath)
+{
+	ft_putstr(" -> ");
+	ft_putstr(linkpath);
 }

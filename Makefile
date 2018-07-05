@@ -6,7 +6,7 @@
 #    By: rdurst <marvin@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/05/14 16:16:42 by rdurst            #+#    #+#              #
-#    Updated: 2018/07/04 22:41:57 by rdurst           ###   ########.fr        #
+#    Updated: 2018/07/05 02:19:41 by rdurst           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -40,11 +40,6 @@ $(NAME):
 	@make -C libft
 	@$(CC) $(SRCS) $(INCLUDES) $(LIBFT) -o $(NAME) $(OPTIONS)
 	@echo "$(BLUE)\t\t\t\tft_ls has been built.$(RESET)"
-
-debug: fclean
-	@make -C libft
-	@$(CC) $(SRCS) $(INCLUDES) $(LIBFT) -o $(NAME) $(OPTIONS) $(DEBUGFLAG)
-	@echo "$(BLUE)\t\t\t\tft_ls has been built with $(GREEN)'-g3'$(BLUE) flag.$(RESET)"
 
 clean:
 	@make -C libft fclean

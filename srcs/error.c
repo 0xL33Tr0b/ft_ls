@@ -6,7 +6,7 @@
 /*   By: rdurst <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/02 12:48:11 by rdurst            #+#    #+#             */
-/*   Updated: 2018/07/05 00:28:50 by rdurst           ###   ########.fr       */
+/*   Updated: 2018/07/05 01:47:38 by rdurst           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,11 +59,18 @@ void	perm_denied(char *file, t_info info)
 **	not_permitted - printing EAPERM permission error
 */
 
-void	not_permitted(char *file)
+void	not_permitted(t_file **dir, t_info info)
 {
-	ft_putstr_fd("./ft_ls: ", STDERR_FILENO);
-	ft_putstr_fd(file, STDERR_FILENO);
-	ft_putstr_fd(": Operation not permitted\n", STDERR_FILENO);
+	int i;
+
+	i = -1;
+	while (++i < info.size)
+		if (dir[i]->error == EPERM)
+		{
+			ft_putstr_fd("./ft_ls: ", STDERR_FILENO);
+			ft_putstr_fd(dir[i]->name, STDERR_FILENO);
+			ft_putstr_fd(": Operation not permitted\n", STDERR_FILENO);
+		}
 }
 
 /*

@@ -6,7 +6,7 @@
 /*   By: rdurst <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/02 13:19:43 by rdurst            #+#    #+#             */
-/*   Updated: 2018/07/04 23:14:33 by rdurst           ###   ########.fr       */
+/*   Updated: 2018/07/05 01:49:25 by rdurst           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,7 @@ int		option_l(t_file **dir, t_info info, t_opts *opts, t_pad *pad)
 	i = -1;
 	if (dir == NULL)
 		return (1);
+	not_permitted(dir, info);
 	if (info.size > 2 && info.type != 1)
 		print_blocks(dir, info.size, opts);
 	while (++i < info.size)
@@ -106,12 +107,13 @@ void	no_opts(t_file **dir, t_info info, t_opts *options)
 	i = -1;
 	if (dir == NULL)
 		return ;
+	not_permitted(dir, info);
 	while (++i < info.size)
 		if (!(options->a == 0 && dir[i]->name[0] == '.'))
 		{
 			if (dir[i]->error == EACCES && info.type == 1)
 				perm_denied(dir[i]->name, info);
-			else
+			else if (dir[i]->error != EPERM)
 				ft_putendl(dir[i]->name);
 		}
 	if (options->rec)

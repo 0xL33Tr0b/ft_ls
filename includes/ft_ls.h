@@ -6,7 +6,7 @@
 /*   By: rdurst <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/14 16:31:22 by rdurst            #+#    #+#             */
-/*   Updated: 2018/07/05 00:01:49 by rdurst           ###   ########.fr       */
+/*   Updated: 2018/07/05 01:47:18 by rdurst           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,11 +130,12 @@ void				free_file(t_file *dir);
 void				free_dir(t_file **dir, int size);
 int					next_dir_offset(char **av);
 long				get_timestamp(char *dir);
-void				not_permitted(char *file);
+void				not_permitted(t_file **dir, t_info info);
 void				perm_denied(char *file, t_info info);
 void				illegal_option(char option);
 void				no_such_file(char *file);
 void				print_l(t_file *file, t_info info, t_pad *pad);
+void				print_link(char *filepath);
 void				two_points(char *file);
 int					replace_if(int value1, int value2);
 
