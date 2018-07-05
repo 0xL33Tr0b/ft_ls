@@ -59,7 +59,7 @@ t_file	*fill_stats(t_file *dir, char *name, char *path, t_stats *stats)
 	dir->linkpath = find_link(path, dir->name);
 	dir->user = find_user(stats);
 	dir->group = find_group(stats);
-	dir->size = stats->st_size;
+	dir->size = find_majmin(stats);
 	dir->timestamp = stats->st_mtime;
 	dir->ntimestamp = stats->st_mtimespec.tv_nsec;
 	dir->blocks = stats->st_blocks;

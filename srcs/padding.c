@@ -53,7 +53,7 @@ t_pad	*fill_pad(t_pad *padding, t_file **dir, int filesize)
 		links = ft_nbrlen(dir[i]->links);
 		user = ft_strlen(dir[i]->user);
 		group = ft_strlen(dir[i]->group);
-		size = ft_nbrlen(dir[i]->size);
+		size = ft_strlen(dir[i]->size);
 		padding->links = replace_if(links, padding->links);
 		padding->user = replace_if(user, padding->user);
 		padding->group = replace_if(group, padding->group);

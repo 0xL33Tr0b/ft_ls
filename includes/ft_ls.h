@@ -71,7 +71,7 @@ typedef struct		s_file
 	char			*linkpath;
 	char			*user;
 	char			*group;
-	long			size;
+	char			*size;
 	long			timestamp;
 	long			ntimestamp;
 	long			blocks;
@@ -138,5 +138,6 @@ void				print_l(t_file *file, t_info info, t_pad *pad);
 void				print_link(char *filepath);
 void				two_points(char *file);
 int					replace_if(int value1, int value2);
+char				*find_majmin(struct stat *stats);
 
 #endif

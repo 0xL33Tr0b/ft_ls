@@ -26,6 +26,7 @@ SRCS= ./srcs/main.c\
 	./srcs/print.c\
 	./srcs/count.c\
 	./srcs/free.c\
+	./srcs/majorminor.c\
 
 OPTIONS= -Wall -Wextra -Werror
 DEBUGFLAG= -g3

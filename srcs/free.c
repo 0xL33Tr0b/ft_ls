@@ -24,6 +24,7 @@ void	free_file(t_file *dir)
 		ft_strdel(&dir->perms);
 		ft_strdel(&dir->user);
 		ft_strdel(&dir->group);
+		ft_strdel(&dir->size);
 		ft_strdel(&dir->linkpath);
 		free(dir);
 	}

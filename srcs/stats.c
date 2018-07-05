@@ -22,12 +22,13 @@ char	*find_modes(struct stat *file)
 	char *ret;
 
 	ret = ft_strnew(10);
-	if (S_ISLNK(file->st_mode))
-		ret[0] = 'l';
-	else if ((file->st_mode & S_IFSOCK) == S_IFSOCK)
-		ret[0] = 's';
-	else
-		ret[0] = S_ISDIR(file->st_mode) ? 'd' : '-';
+	ret[0] = '-';
+	ret[0] = ((file->st_mode & S_IFIFO) == S_IFIFO ? 'p' : ret[0]);
+	ret[0] = ((file->st_mode & S_IFCHR) == S_IFCHR ? 'c' : ret[0]);
+	ret[0] = ((file->st_mode & S_IFDIR) == S_IFDIR ? 'd' : ret[0]);
+	ret[0] = ((file->st_mode & S_IFBLK) == S_IFBLK ? 'b' : ret[0]);
+	ret[0] = ((file->st_mode & S_IFSOCK) == S_IFSOCK ? 's' : ret[0]);
+	ret[0] = ((file->st_mode & S_IFLNK) == S_IFLNK ? 'l' : ret[0]);
 	ret[1] = (file->st_mode & S_IRUSR ? 'r' : '-');
 	ret[2] = (file->st_mode & S_IWUSR ? 'w' : '-');
 	ret[3] = (file->st_mode & S_IXUSR ? 'x' : '-');
